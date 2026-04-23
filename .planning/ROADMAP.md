@@ -22,8 +22,12 @@ GymTracker v1 delivers a single-user, offline-first workout logging experience. 
   1. User can search built-in exercises by name and muscle group
   2. User can add custom exercises with name, muscle group, and equipment type
   3. Exercise catalog loads instantly and is available during workouts
-**Plans**: TBD
+**Plans**: 2 plans
 **UI hint**: yes
+
+Plans:
+- [ ] `01-01-PLAN.md` — Next.js scaffold + Supabase client + exercises table schema + wger seed script
+- [ ] `01-02-PLAN.md` — Exercise catalog UI (search + muscle filter) + custom exercise creation form
 
 ### Phase 2: Core Workout Logging
 **Goal**: Users can log free-form workouts with minimal friction
@@ -77,7 +81,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Exercise Database | 0/TBD | Not started | - |
+| 1. Foundation & Exercise Database | 0/2 | Planned | - |
 | 2. Core Workout Logging | 0/TBD | Not started | - |
 | 3. Workout History & Editing | 0/TBD | Not started | - |
 | 4. Routines & Workout Templates | 0/TBD | Not started | - |
