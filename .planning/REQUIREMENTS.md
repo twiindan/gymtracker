@@ -102,8 +102,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RTN-03 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 10 total
-- Mapped to phases: 10
+- v1 requirements: 12 total
+- Mapped to phases: 12
 - Unmapped: 0 ✓
 
 ---
