@@ -38,7 +38,6 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
 
     const supabase = createBrowserClient();
 
-    // Check for duplicate name
     if (!isEditing || name !== exercise?.name) {
       const { data: existing } = await supabase
         .from("exercises")
@@ -86,7 +85,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
       }
     }
 
-    setSuccess(isEditing ? "Exercise updated successfully." : "Exercise created successfully.");
+    setSuccess(isEditing ? "Exercise updated successfully!" : "Exercise created successfully!");
     setTimeout(() => {
       onSuccess();
     }, 800);
@@ -99,21 +98,21 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-900 dark:text-red-200">
+        <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger border border-danger/20">
           {error}
         </div>
       )}
       {success && (
-        <div className="rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700 dark:bg-green-900 dark:text-green-200">
+        <div className="rounded-xl bg-success/10 px-4 py-3 text-sm text-success border border-success/20">
           {success}
         </div>
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Name <span className="text-red-500">*</span>
+        <label className="mb-1.5 block text-sm font-semibold text-foreground">
+          Exercise Name <span className="text-danger">*</span>
         </label>
         <input
           type="text"
@@ -122,23 +121,23 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
           minLength={2}
           maxLength={50}
           required
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           placeholder="e.g., Cable Crossover"
         />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Primary Muscle Group <span className="text-red-500">*</span>
+          <label className="mb-1.5 block text-sm font-semibold text-foreground">
+            Primary Muscle <span className="text-danger">*</span>
           </label>
           <select
             value={primaryMuscle}
             onChange={(e) => setPrimaryMuscle(e.target.value)}
             required
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           >
-            <option value="">Select...</option>
+            <option value="">Select muscle group...</option>
             {MUSCLE_GROUPS.map((m) => (
               <option key={m} value={m}>
                 {m}
@@ -148,13 +147,13 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <label className="mb-1.5 block text-sm font-semibold text-foreground">
             Equipment
           </label>
           <select
             value={equipment}
             onChange={(e) => setEquipment(e.target.value)}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           >
             <option value="">None / Bodyweight</option>
             {EQUIPMENT_TYPES.map((eq) => (
@@ -167,17 +166,17 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <label className="mb-2 block text-sm font-semibold text-foreground">
           Secondary Muscle Groups
         </label>
         <div className="flex flex-wrap gap-2">
           {MUSCLE_GROUPS.map((m) => (
             <label
               key={m}
-              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
                 secondaryMuscles.includes(m)
-                  ? "bg-zinc-800 text-white dark:bg-zinc-200 dark:text-zinc-900"
-                  : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20 dark:hover:bg-primary-light/30"
               }`}
             >
               <input
@@ -193,17 +192,17 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Tracking Type <span className="text-red-500">*</span>
+        <label className="mb-2 block text-sm font-semibold text-foreground">
+          Tracking Type <span className="text-danger">*</span>
         </label>
         <div className="flex flex-wrap gap-3">
           {(["reps", "duration", "distance", "bodyweight"] as TrackingType[]).map((type) => (
             <label
               key={type}
-              className={`cursor-pointer rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`cursor-pointer rounded-xl border px-5 py-2.5 text-sm font-medium transition-all ${
                 trackingType === type
-                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
-                  : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  ? "border-primary bg-primary text-white shadow-sm"
+                  : "border-border bg-surface text-muted hover:border-primary/50 hover:bg-primary-light/30 dark:bg-surface-elevated"
               }`}
             >
               <input
@@ -221,7 +220,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <label className="mb-1.5 block text-sm font-semibold text-foreground">
           Description
         </label>
         <textarea
@@ -229,24 +228,36 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
           onChange={(e) => setDescription(e.target.value)}
           maxLength={500}
           rows={3}
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
-          placeholder="Optional description..."
+          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none dark:bg-surface-elevated"
+          placeholder="Optional description or notes..."
         />
-        <div className="mt-1 text-right text-xs text-zinc-400">{description.length}/500</div>
+        <div className="mt-1 text-right text-xs text-muted">{description.length}/500</div>
       </div>
 
       <div className="flex gap-3 pt-2">
         <button
           type="submit"
           disabled={!isValid || submitting}
-          className="flex-1 rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {submitting ? "Saving..." : isEditing ? "Update Exercise" : "Create Exercise"}
+          {submitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Saving...
+            </span>
+          ) : isEditing ? (
+            "Update Exercise"
+          ) : (
+            "Create Exercise"
+          )}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded-xl border border-border px-5 py-3 text-sm font-semibold text-muted transition-all hover:bg-surface-elevated hover:text-foreground"
         >
           Cancel
         </button>

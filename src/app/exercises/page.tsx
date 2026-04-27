@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { Exercise } from "@/db/schema";
 import { ExerciseSearch } from "@/components/exercise-search";
 import { ExerciseList } from "@/components/exercise-list";
 import { CustomExerciseForm } from "@/components/custom-exercise-form";
 import { createBrowserClient } from "@/db/client";
-import { useEffect } from "react";
 
 export default function ExercisesPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -16,7 +15,6 @@ export default function ExercisesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Modal state
   const [showForm, setShowForm] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | undefined>();
   const [deleteConfirm, setDeleteConfirm] = useState<Exercise | null>(null);
@@ -101,7 +99,6 @@ export default function ExercisesPage() {
     if (error) {
       setError(error.message);
     } else {
-      // Optimistic update
       const updated = exercises.filter((ex) => ex.id !== deleteConfirm.id);
       setExercises(updated);
       filterExercises(searchQuery, activeMuscle);
@@ -123,44 +120,55 @@ export default function ExercisesPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-12 text-center text-zinc-500">
-        Loading exercises...
+      <div className="mx-auto max-w-5xl px-4 py-12 text-center">
+        <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+        <p className="mt-3 text-muted text-sm">Loading exercises...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-12 text-center text-red-600">
-        Error: {error}
+      <div className="mx-auto max-w-5xl px-4 py-12 text-center">
+        <div className="rounded-xl bg-danger/10 border border-danger/20 px-4 py-3 text-danger inline-block">
+          Error: {error}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
+      {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Exercise Catalog</h1>
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
+          <p className="text-sm text-muted mt-1">{exercises.length} exercises available</p>
+        </div>
         <button
           onClick={() => {
             setEditingExercise(undefined);
             setShowForm(true);
           }}
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
         >
-          + Add Custom
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Add Exercise
         </button>
       </div>
 
       <ExerciseSearch onSearch={handleSearch} resultCount={filtered.length} />
 
+      {/* Muscle filters */}
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           onClick={() => handleMuscleFilter(null)}
-          className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+          className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
             activeMuscle === null
-              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-              : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+              ? "bg-primary text-white shadow-sm"
+              : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
           }`}
         >
           All
@@ -171,10 +179,10 @@ export default function ExercisesPage() {
             <button
               key={muscle}
               onClick={() => handleMuscleFilter(muscle)}
-              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 activeMuscle === muscle
-                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
               }`}
             >
               {muscle}
@@ -193,11 +201,21 @@ export default function ExercisesPage() {
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-900">
-            <h2 className="mb-4 text-lg font-semibold">
-              {editingExercise ? "Edit Exercise" : "Add Custom Exercise"}
-            </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface p-6 shadow-2xl border border-border animate-slide-up">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-xl font-bold">
+                {editingExercise ? "Edit Exercise" : "Add Custom Exercise"}
+              </h2>
+              <button
+                onClick={handleFormCancel}
+                className="rounded-lg p-2 text-muted hover:bg-surface-elevated transition-colors"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
             <CustomExerciseForm
               exercise={editingExercise}
               onSuccess={handleFormSuccess}
@@ -209,22 +227,27 @@ export default function ExercisesPage() {
 
       {/* Delete Confirmation */}
       {deleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-900">
-            <h2 className="text-lg font-semibold">Delete Exercise</h2>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              Delete &quot;{deleteConfirm.name}&quot;? This cannot be undone.
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-2xl bg-surface p-6 shadow-2xl border border-border animate-slide-up">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 mx-auto mb-4">
+              <svg className="h-6 w-6 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-center">Delete Exercise</h2>
+            <p className="mt-2 text-sm text-muted text-center">
+              Delete &quot;{deleteConfirm.name}&quot;? This action cannot be undone.
             </p>
-            <div className="mt-4 flex gap-3">
+            <div className="mt-5 flex gap-3">
               <button
                 onClick={handleConfirmDelete}
-                className="flex-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"
+                className="flex-1 rounded-xl bg-danger px-4 py-2.5 text-sm font-bold text-white transition-all hover:bg-red-700 hover:shadow-lg hover:shadow-danger/25"
               >
                 Delete
               </button>
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-muted transition-all hover:bg-surface-elevated"
               >
                 Cancel
               </button>
