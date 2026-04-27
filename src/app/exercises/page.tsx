@@ -127,11 +127,13 @@ export default function ExercisesPage() {
             <p className="text-sm text-muted mt-1">Loading...</p>
           </div>
           <button
+            type="button"
             onClick={() => {
               setEditingExercise(undefined);
               setShowForm(true);
             }}
-            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
+            style={{ backgroundColor: '#10b981', color: 'white' }}
+            className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -160,17 +162,19 @@ export default function ExercisesPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
           <p className="text-sm text-muted mt-1">{exercises.length} exercises available</p>
         </div>
         <button
+          type="button"
           onClick={() => {
             setEditingExercise(undefined);
             setShowForm(true);
           }}
-          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
+          style={{ backgroundColor: '#10b981', color: 'white' }}
+          className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
