@@ -170,22 +170,18 @@ export default function WorkoutsPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl py-4">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-extrabold tracking-tight">Workouts</h1>
-            <p className="text-sm text-muted mt-1">Loading your training history...</p>
-          </div>
+      <div className="py-12 text-center">
+        <div className="mb-8">
+          <h1 className="text-3xl font-extrabold tracking-tight">Workouts</h1>
+          <p className="text-sm text-muted mt-1">Loading your training history...</p>
         </div>
-        <div className="py-12 text-center">
-          <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-        </div>
+        <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl py-4 page-container">
+    <div className="py-4 page-container">
       {/* Header */}
         <div className="mb-10 flex items-center justify-between gap-4">
         <div>

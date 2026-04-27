@@ -30,7 +30,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Header />
-        <main className="flex-1 w-full px-6 sm:px-8 lg:px-12 py-8 sm:py-10">{children}</main>
+        <main className="flex-1 w-full" style={{ paddingLeft: '32px', paddingRight: '32px', paddingTop: '40px', paddingBottom: '40px' }}>
+          <div className="mx-auto max-w-6xl w-full">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );

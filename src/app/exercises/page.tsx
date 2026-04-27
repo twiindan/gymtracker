@@ -128,7 +128,7 @@ export default function ExercisesPage() {
 
   if (loading) {
     return (
-    <div className="mx-auto max-w-5xl py-4 page-container">
+    <div className="py-4 page-container">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
@@ -159,7 +159,7 @@ export default function ExercisesPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-5xl py-12 text-center">
+      <div className="py-12 text-center">
         <div className="rounded-xl bg-danger/10 border border-danger/20 px-4 py-3 text-danger inline-block">
           Error: {error}
         </div>
