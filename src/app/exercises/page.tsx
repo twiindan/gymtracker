@@ -42,6 +42,14 @@ export default function ExercisesPage() {
     fetchExercises();
   }, []);
 
+  // Re-apply filters when exercises data changes (fixes stale closure)
+  useEffect(() => {
+    if (exercises.length > 0) {
+      filterExercises(searchQuery, activeMuscle);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exercises]);
+
   const handleSearch = useCallback(
     (query: string) => {
       setSearchQuery(query);

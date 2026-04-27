@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface ExerciseSearchProps {
   onSearch: (query: string) => void;
@@ -9,19 +9,31 @@ interface ExerciseSearchProps {
 
 export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
+  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
-      onSearch(query);
+      setDebouncedQuery(query);
     }, 200);
     return () => clearTimeout(timer);
-  }, [query, onSearch]);
+  }, [query]);
+
+  // Only call onSearch when debounced query changes (not on initial mount with empty string)
+  const isFirstMount = useRef(true);
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    onSearch(debouncedQuery);
+  }, [debouncedQuery, onSearch]);
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900">
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-3 transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
         <svg
-          className="h-5 w-5 shrink-0 text-zinc-400"
+          className="h-5 w-5 shrink-0 text-muted"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -44,7 +56,7 @@ export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
         {query && (
           <button
             onClick={() => setQuery("")}
-            className="rounded p-0.5 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+            className="rounded-lg p-1 text-muted hover:bg-surface-elevated hover:text-foreground transition-colors"
             aria-label="Clear search"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
