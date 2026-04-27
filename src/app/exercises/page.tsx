@@ -128,7 +128,7 @@ export default function ExercisesPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-6">
+    <div className="mx-auto max-w-5xl px-4 py-8 page-container">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
@@ -194,32 +194,35 @@ export default function ExercisesPage() {
       <ExerciseSearch onSearch={handleSearch} resultCount={filtered.length} />
 
       {/* Muscle filters */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          onClick={() => handleMuscleFilter(null)}
-          className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-            activeMuscle === null
-              ? "bg-primary text-white shadow-sm"
-              : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
-          }`}
-        >
-          All
-        </button>
-        {Array.from(new Set(exercises.map((ex) => ex.primary_muscle_group)))
-          .sort()
-          .map((muscle) => (
-            <button
-              key={muscle}
-              onClick={() => handleMuscleFilter(muscle)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                activeMuscle === muscle
-                  ? "bg-primary text-white shadow-sm"
-                  : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
-              }`}
-            >
-              {muscle}
-            </button>
-          ))}
+      <div className="mt-6 mb-2">
+        <label className="mb-3 block text-xs font-bold uppercase tracking-wider text-muted">Muscle Groups</label>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => handleMuscleFilter(null)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+              activeMuscle === null
+                ? "bg-primary text-white shadow-sm shadow-primary/25"
+                : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
+            }`}
+          >
+            All Muscles
+          </button>
+          {Array.from(new Set(exercises.map((ex) => ex.primary_muscle_group)))
+            .sort()
+            .map((muscle) => (
+              <button
+                key={muscle}
+                onClick={() => handleMuscleFilter(muscle)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  activeMuscle === muscle
+                    ? "bg-primary text-white shadow-sm shadow-primary/25"
+                    : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
+                }`}
+              >
+                {muscle}
+              </button>
+            ))}
+        </div>
       </div>
 
       <div className="mt-6">
