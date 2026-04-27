@@ -199,11 +199,8 @@ export default function ExercisesPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleMuscleFilter(null)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-              activeMuscle === null
-                ? "bg-emerald-500 text-white shadow-sm"
-                : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400"
-            }`}
+            className="rounded-full px-4 py-2 text-sm font-semibold transition-all shadow-sm"
+            style={activeMuscle === null ? { backgroundColor: '#10b981', color: 'white' } : { backgroundColor: '#d1fae5', color: '#059669' }}
           >
             All Muscles
           </button>
@@ -213,11 +210,8 @@ export default function ExercisesPage() {
               <button
                 key={muscle}
                 onClick={() => handleMuscleFilter(muscle)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-                  activeMuscle === muscle
-                    ? "bg-emerald-500 text-white shadow-sm"
-                    : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400"
-                }`}
+                className="rounded-full px-4 py-2 text-sm font-semibold transition-all shadow-sm"
+                style={activeMuscle === muscle ? { backgroundColor: '#10b981', color: 'white' } : { backgroundColor: '#d1fae5', color: '#059669' }}
               >
                 {muscle}
               </button>
