@@ -120,9 +120,29 @@ export default function ExercisesPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-12 text-center">
-        <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-        <p className="mt-3 text-muted text-sm">Loading exercises...</p>
+      <div className="mx-auto max-w-5xl px-4 py-6">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
+            <p className="text-sm text-muted mt-1">Loading...</p>
+          </div>
+          <button
+            onClick={() => {
+              setEditingExercise(undefined);
+              setShowForm(true);
+            }}
+            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98]"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add Exercise
+          </button>
+        </div>
+        <div className="py-12 text-center">
+          <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+          <p className="mt-3 text-muted text-sm">Loading exercises...</p>
+        </div>
       </div>
     );
   }
