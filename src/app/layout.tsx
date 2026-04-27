@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Header />
         <main className="flex-1 w-full" style={{ paddingLeft: '32px', paddingRight: '32px', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="mx-auto max-w-6xl w-full">
+          <div className="mx-auto max-w-7xl">
             {children}
           </div>
         </main>
