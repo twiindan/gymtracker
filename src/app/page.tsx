@@ -244,7 +244,7 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
+    <div className="mx-auto max-w-2xl py-4">
       {/* Hero */}
       <div className="mb-8 text-center animate-fade-in">
         <h1 className="text-4xl font-extrabold tracking-tight mb-3">

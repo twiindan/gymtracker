@@ -279,7 +279,7 @@ export default function WorkoutDetailPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12 text-center text-zinc-500">
+      <div className="mx-auto max-w-2xl py-12 text-center text-zinc-500">
         Loading workout...
       </div>
     );
@@ -287,7 +287,7 @@ export default function WorkoutDetailPage() {
 
   if (error || !data) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12 text-center">
+      <div className="mx-auto max-w-2xl py-12 text-center">
         <div className="text-red-600">{error || "Workout not found"}</div>
         <Link
           href="/workouts"
@@ -304,7 +304,7 @@ export default function WorkoutDetailPage() {
   const totalSets = exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-2xl py-4">
       {/* Back link */}
       <Link
         href="/workouts"

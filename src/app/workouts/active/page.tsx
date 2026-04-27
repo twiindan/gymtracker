@@ -450,7 +450,7 @@ function ActiveWorkoutInner() {
   // Start workout screen
   if (!workout) {
     return (
-      <div className="mx-auto flex max-w-lg flex-col items-center justify-center px-4 py-24">
+      <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-24">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold tracking-tight">Start Workout</h1>
           <p className="mt-2 text-zinc-500">Log your sets, track your progress.</p>
@@ -479,7 +479,7 @@ function ActiveWorkoutInner() {
 
   // Active workout screen
   return (
-    <div className="mx-auto max-w-2xl px-4 py-4">
+    <div className="mx-auto max-w-2xl py-4">
       {/* Header */}
       <div className="sticky top-14 z-10 -mx-4 border-b border-zinc-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
         <div className="flex items-center justify-between">

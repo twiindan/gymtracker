@@ -119,7 +119,7 @@ export default function NewRoutinePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-2xl py-4">
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">New Routine</h1>
 
       {error && (

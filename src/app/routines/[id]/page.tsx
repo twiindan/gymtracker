@@ -67,7 +67,7 @@ export default function RoutineDetailPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12 text-center text-zinc-500">
+      <div className="mx-auto max-w-2xl py-12 text-center text-zinc-500">
         Loading routine...
       </div>
     );
@@ -75,7 +75,7 @@ export default function RoutineDetailPage() {
 
   if (error || !routine) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12 text-center">
+      <div className="mx-auto max-w-2xl py-12 text-center">
         <div className="text-red-600">{error || "Routine not found"}</div>
         <Link
           href="/routines"
@@ -88,7 +88,7 @@ export default function RoutineDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
+    <div className="mx-auto max-w-2xl py-4">
       {/* Back link */}
       <Link
         href="/routines"

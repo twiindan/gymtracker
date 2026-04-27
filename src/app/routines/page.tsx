@@ -51,7 +51,7 @@ export default function RoutinesPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mx-auto max-w-3xl py-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-extrabold tracking-tight">Routines</h1>
@@ -66,7 +66,7 @@ export default function RoutinesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 page-container">
+    <div className="mx-auto max-w-3xl py-4 page-container">
       {/* Header */}
       <div className="mb-8 flex items-center justify-between gap-4">
         <div>

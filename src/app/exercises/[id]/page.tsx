@@ -174,7 +174,7 @@ export default function ExerciseProgressPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 text-center text-zinc-500">
+      <div className="mx-auto max-w-3xl py-12 text-center text-zinc-500">
         Loading exercise data...
       </div>
     );
@@ -182,7 +182,7 @@ export default function ExerciseProgressPage() {
 
   if (!exercise) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 text-center">
+      <div className="mx-auto max-w-3xl py-12 text-center">
         <div className="text-red-600">Exercise not found</div>
         <Link href="/exercises" className="mt-4 inline-block text-sm text-zinc-500 hover:text-zinc-900">
           ← Back to exercises
@@ -192,7 +192,7 @@ export default function ExerciseProgressPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6">
+    <div className="mx-auto max-w-3xl py-4">
       {/* Back link */}
       <Link
         href="/exercises"
