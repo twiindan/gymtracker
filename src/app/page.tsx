@@ -33,6 +33,7 @@ export default function Home() {
   const [recentPRs, setRecentPRs] = useState<RecentPR[]>([]);
   const [monthlyVolume, setMonthlyVolume] = useState(0);
   const [workoutStreak, setWorkoutStreak] = useState(0);
+  const [totalWorkouts, setTotalWorkouts] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,6 +76,13 @@ export default function Home() {
       );
 
       setRecentWorkouts(enriched);
+
+      // Fetch total workouts count
+      const { count: totalCount } = await supabase
+        .from("workouts")
+        .select("*", { count: "exact", head: true })
+        .is("deleted_at", null);
+      setTotalWorkouts(totalCount ?? 0);
 
       // Fetch recent routines
       const { data: routines } = await supabase
@@ -148,7 +156,7 @@ export default function Home() {
           const yearWeek = `${date.getFullYear()}-W${Math.ceil(date.getDate() / 7)}`;
           weeks.add(yearWeek);
         });
-        setWorkoutStreak(Math.min(weeks.size, 4)); // Cap at 4 for display
+        setWorkoutStreak(Math.min(weeks.size, 4));
       }
 
       // Fetch recent PRs (last 30 days)
@@ -175,7 +183,6 @@ export default function Home() {
           ])
         );
 
-        // Group sets by exercise and find PRs
         const exerciseSets = new Map<string, SetWithContext[]>();
         (recentSets as { weight: number | null; reps: number | null; workout_exercise_id: string; created_at: string }[]).forEach(
           (set) => {
@@ -218,7 +225,6 @@ export default function Home() {
           }
         }
 
-        // Sort by date and take top 5
         prs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setRecentPRs(prs.slice(0, 5));
       }
@@ -240,63 +246,87 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       {/* Hero */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight">GymTracker</h1>
-        <p className="mt-2 text-zinc-500">
-          Effortlessly log every workout and clearly see strength progress over time.
+      <div className="mb-8 text-center animate-fade-in">
+        <h1 className="text-4xl font-extrabold tracking-tight mb-3">
+          <span className="gradient-text">GymTracker</span>
+        </h1>
+        <p className="text-muted text-base max-w-sm mx-auto leading-relaxed">
+          Effortlessly log every workout and clearly see your strength progress over time.
         </p>
       </div>
 
       {/* Start Workout CTA */}
-      <div className="mb-8">
+      <div className="mb-8 animate-slide-up stagger-1">
         <Link
           href="/workouts/active"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-primary to-primary-dark py-5 text-lg font-bold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98]"
         >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <svg className="h-6 w-6 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           Start Workout
         </Link>
       </div>
 
       {/* Stats Row */}
-      <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="text-2xl font-bold">{loading ? "—" : Math.round(monthlyVolume).toLocaleString()}</div>
-          <div className="text-xs text-zinc-500">kg this month</div>
-        </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="text-2xl font-bold">{loading ? "—" : workoutStreak}</div>
-          <div className="text-xs text-zinc-500">Active weeks</div>
-        </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="text-2xl font-bold">{loading ? "—" : recentWorkouts.length}</div>
-          <div className="text-xs text-zinc-500">Recent workouts</div>
-        </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="text-2xl font-bold">{loading ? "—" : recentRoutines.length}</div>
-          <div className="text-xs text-zinc-500">Routines</div>
-        </div>
+      <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4 animate-slide-up stagger-2">
+        <StatCard 
+          value={loading ? "—" : Math.round(monthlyVolume).toLocaleString()} 
+          label="kg this month" 
+          icon={<WeightIcon />}
+          color="primary"
+        />
+        <StatCard 
+          value={loading ? "—" : workoutStreak} 
+          label="Active weeks" 
+          icon={<FireIcon />}
+          color="warning"
+        />
+        <StatCard 
+          value={loading ? "—" : totalWorkouts} 
+          label="Total workouts" 
+          icon={<TrophyIcon />}
+          color="accent"
+        />
+        <StatCard 
+          value={loading ? "—" : recentRoutines.length} 
+          label="Routines" 
+          icon={<ClipboardIcon />}
+          color="success"
+        />
       </div>
 
       {/* Recent PRs */}
       {recentPRs.length > 0 && (
-        <div className="mb-8">
-          <h2 className="mb-3 text-lg font-semibold">Recent PRs</h2>
+        <div className="mb-8 animate-slide-up stagger-3">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-warning/20">
+              <svg className="h-3.5 w-3.5 text-warning" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold">Recent PRs</h2>
+          </div>
           <div className="space-y-2">
             {recentPRs.map((pr, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-lg border border-zinc-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900"
+                className="flex items-center justify-between rounded-xl border border-border bg-surface p-4 card-hover"
               >
-                <div>
-                  <div className="font-medium">{pr.exercise_name}</div>
-                  <div className="text-xs text-zinc-500">{pr.type}</div>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-light dark:bg-primary-light/30">
+                    <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">{pr.exercise_name}</div>
+                    <div className="text-xs text-muted">{pr.type}</div>
+                  </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold text-amber-700 dark:text-amber-400">{pr.value}</div>
-                  <div className="text-xs text-zinc-500">{formatDate(pr.date)}</div>
+                  <div className="font-bold text-primary">{pr.value}</div>
+                  <div className="text-xs text-muted">{formatDate(pr.date)}</div>
                 </div>
               </div>
             ))}
@@ -305,40 +335,50 @@ export default function Home() {
       )}
 
       {/* Recent Routines */}
-      <div className="mb-8">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Routines</h2>
+      <div className="mb-8 animate-slide-up stagger-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-light dark:bg-accent-light/30">
+              <ClipboardIcon className="h-3.5 w-3.5 text-accent" />
+            </div>
+            <h2 className="text-lg font-bold">Routines</h2>
+          </div>
           <Link
             href="/routines"
-            className="text-sm text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-300"
+            className="text-sm font-medium text-muted transition-colors hover:text-primary"
           >
             View all →
           </Link>
         </div>
 
         {loading ? (
-          <div className="py-8 text-center text-zinc-500">Loading...</div>
+          <LoadingSkeleton />
         ) : recentRoutines.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-zinc-300 py-6 text-center dark:border-zinc-700">
-            <p className="text-zinc-500">No routines yet. Create your first template!</p>
-          </div>
+          <EmptyState 
+            message="No routines yet. Create your first template!" 
+            action={{ href: "/routines/new", label: "Create Routine" }}
+          />
         ) : (
           <div className="space-y-2">
             {recentRoutines.map((routine) => (
               <Link
                 key={routine.id}
                 href={`/workouts/active?routine_id=${routine.id}`}
-                className="block rounded-lg border border-zinc-200 bg-white p-3 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                className="group flex items-center justify-between rounded-xl border border-border bg-surface p-4 card-hover"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <svg className="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="font-medium">{routine.name}</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-light dark:bg-accent-light/30 transition-colors group-hover:bg-accent/20">
+                    <PlayIcon className="h-5 w-5 text-accent" />
                   </div>
-                  <div className="text-xs text-zinc-500">{routine.exercise_count} exercises</div>
+                  <div>
+                    <div className="font-semibold text-sm">{routine.name}</div>
+                    <div className="text-xs text-muted">{routine.exercise_count} exercises</div>
+                  </div>
+                </div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
                 </div>
               </Link>
             ))}
@@ -347,39 +387,59 @@ export default function Home() {
       </div>
 
       {/* Recent Workouts */}
-      <div>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Recent Workouts</h2>
+      <div className="animate-slide-up stagger-5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-light dark:bg-primary-light/30">
+              <DumbbellIcon className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <h2 className="text-lg font-bold">Recent Workouts</h2>
+          </div>
           <Link
             href="/workouts"
-            className="text-sm text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-300"
+            className="text-sm font-medium text-muted transition-colors hover:text-primary"
           >
             View all →
           </Link>
         </div>
 
         {loading ? (
-          <div className="py-8 text-center text-zinc-500">Loading...</div>
+          <LoadingSkeleton />
         ) : recentWorkouts.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-zinc-300 py-8 text-center dark:border-zinc-700">
-            <p className="text-zinc-500">No workouts yet. Start your first one!</p>
-          </div>
+          <EmptyState 
+            message="No workouts yet. Start your first one!" 
+            action={{ href: "/workouts/active", label: "Start Workout" }}
+          />
         ) : (
           <div className="space-y-2">
             {recentWorkouts.map((workout) => (
               <Link
                 key={workout.id}
                 href={`/workouts/${workout.id}`}
-                className="block rounded-lg border border-zinc-200 bg-white p-3 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                className="group block rounded-xl border border-border bg-surface p-4 card-hover"
               >
                 <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium">{workout.name || "Workout"}</div>
-                    <div className="text-xs text-zinc-500">{formatDate(workout.started_at)}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-elevated border border-border">
+                      <span className="text-xs font-bold text-muted">
+                        {new Date(workout.started_at).getDate()}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm">{workout.name || "Workout"}</div>
+                      <div className="text-xs text-muted">{formatDate(workout.started_at)}</div>
+                    </div>
                   </div>
-                  <div className="text-right text-xs text-zinc-500">
-                    <div>{workout.exercise_count} exercises</div>
-                    <div>{workout.set_count} sets</div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right text-xs text-muted">
+                      <div className="font-medium text-foreground">{workout.exercise_count} exercises</div>
+                      <div>{workout.set_count} sets</div>
+                    </div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -388,5 +448,113 @@ export default function Home() {
         )}
       </div>
     </div>
+  );
+}
+
+function StatCard({ value, label, icon, color }: { value: string | number; label: string; icon: React.ReactNode; color: string }) {
+  const colorClasses: Record<string, string> = {
+    primary: "bg-primary-light text-primary dark:bg-primary-light/30",
+    warning: "bg-warning/10 text-warning",
+    accent: "bg-accent-light text-accent dark:bg-accent-light/30",
+    success: "bg-success/10 text-success",
+  };
+
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4 text-center card-hover">
+      <div className={`inline-flex h-10 w-10 items-center justify-center rounded-lg mb-2 ${colorClasses[color]}`}>
+        {icon}
+      </div>
+      <div className="text-2xl font-extrabold">{value}</div>
+      <div className="text-xs text-muted font-medium">{label}</div>
+    </div>
+  );
+}
+
+function EmptyState({ message, action }: { message: string; action?: { href: string; label: string } }) {
+  return (
+    <div className="rounded-xl border-2 border-dashed border-border py-8 px-4 text-center">
+      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-light dark:bg-primary-light/20 mb-3">
+        <svg className="h-6 w-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      </div>
+      <p className="text-muted text-sm mb-3">{message}</p>
+      {action && (
+        <Link
+          href={action.href}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-dark"
+        >
+          {action.label}
+        </Link>
+      )}
+    </div>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-2">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="rounded-xl border border-border bg-surface p-4 animate-pulse-slow">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-border" />
+            <div className="flex-1">
+              <div className="h-4 w-32 rounded bg-border mb-1" />
+              <div className="h-3 w-20 rounded bg-border" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Icons
+function WeightIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+    </svg>
+  );
+}
+
+function FireIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1.001A3.75 3.75 0 0012 18z" />
+    </svg>
+  );
+}
+
+function TrophyIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.375m9 0h1.5M12 4.5v2.25m0 0h1.5m-1.5 0h-1.5m1.5 0v2.25m0-2.25h-1.5m1.5 0h1.5" />
+    </svg>
+  );
+}
+
+function ClipboardIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    </svg>
+  );
+}
+
+function DumbbellIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+    </svg>
+  );
+}
+
+function PlayIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z" />
+    </svg>
   );
 }
