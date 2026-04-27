@@ -10,6 +10,7 @@ interface ExerciseSearchProps {
 export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const isFirstMount = useRef(true);
 
   // Debounce search
   useEffect(() => {
@@ -20,7 +21,6 @@ export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
   }, [query]);
 
   // Only call onSearch when debounced query changes (not on initial mount with empty string)
-  const isFirstMount = useRef(true);
   useEffect(() => {
     if (isFirstMount.current) {
       isFirstMount.current = false;
@@ -31,7 +31,7 @@ export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-3 transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3 transition-all duration-200 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 shadow-sm">
         <svg
           className="h-5 w-5 shrink-0 text-muted"
           fill="none"
@@ -50,7 +50,7 @@ export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
           placeholder="Search exercises..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-400"
+          className="w-full bg-transparent text-sm outline-none placeholder:text-muted/60 text-foreground"
           aria-label="Search exercises"
         />
         {query && (
@@ -66,8 +66,8 @@ export function ExerciseSearch({ onSearch, resultCount }: ExerciseSearchProps) {
         )}
       </div>
       {query && (
-        <div className="mt-1.5 text-xs text-zinc-500">
-          {resultCount} result{resultCount !== 1 ? "s" : ""}
+        <div className="mt-2 text-xs text-muted font-medium">
+          {resultCount} result{resultCount !== 1 ? "s" : ""} found
         </div>
       )}
     </div>

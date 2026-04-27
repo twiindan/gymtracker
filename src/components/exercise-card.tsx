@@ -8,23 +8,23 @@ interface ExerciseCardProps {
   onDelete?: () => void;
 }
 
-const muscleColors: Record<string, string> = {
-  Chest: "bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-200",
-  Back: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200",
-  Shoulders: "bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200",
-  Biceps: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
-  Triceps: "bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-200",
-  Quadriceps: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
-  Hamstrings: "bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200",
-  Glutes: "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200",
-  Calves: "bg-lime-100 text-lime-800 dark:bg-lime-900 dark:text-lime-200",
-  Abs: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200",
-  Forearms: "bg-stone-100 text-stone-800 dark:bg-stone-700 dark:text-stone-200",
-  Traps: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200",
-  Lats: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-  "Lower Back": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-  "Full Body": "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-  Cardio: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+const muscleConfig: Record<string, { bg: string; text: string; icon: string }> = {
+  Chest: { bg: "bg-rose-500", text: "text-rose-600", icon: "text-rose-500" },
+  Back: { bg: "bg-emerald-500", text: "text-emerald-600", icon: "text-emerald-500" },
+  Shoulders: { bg: "bg-sky-500", text: "text-sky-600", icon: "text-sky-500" },
+  Biceps: { bg: "bg-amber-500", text: "text-amber-600", icon: "text-amber-500" },
+  Triceps: { bg: "bg-violet-500", text: "text-violet-600", icon: "text-violet-500" },
+  Quadriceps: { bg: "bg-orange-500", text: "text-orange-600", icon: "text-orange-500" },
+  Hamstrings: { bg: "bg-teal-500", text: "text-teal-600", icon: "text-teal-500" },
+  Glutes: { bg: "bg-pink-500", text: "text-pink-600", icon: "text-pink-500" },
+  Calves: { bg: "bg-lime-500", text: "text-lime-600", icon: "text-lime-500" },
+  Abs: { bg: "bg-cyan-500", text: "text-cyan-600", icon: "text-cyan-500" },
+  Forearms: { bg: "bg-stone-500", text: "text-stone-600", icon: "text-stone-500" },
+  Traps: { bg: "bg-indigo-500", text: "text-indigo-600", icon: "text-indigo-500" },
+  Lats: { bg: "bg-green-500", text: "text-green-600", icon: "text-green-500" },
+  "Lower Back": { bg: "bg-yellow-500", text: "text-yellow-600", icon: "text-yellow-500" },
+  "Full Body": { bg: "bg-red-500", text: "text-red-600", icon: "text-red-500" },
+  Cardio: { bg: "bg-blue-500", text: "text-blue-600", icon: "text-blue-500" },
 };
 
 function TrackingIcon({ type }: { type: Exercise["tracking_type"] }) {
@@ -49,7 +49,7 @@ function TrackingIcon({ type }: { type: Exercise["tracking_type"] }) {
   };
 
   return (
-    <span className="inline-flex items-center gap-1 text-xs text-zinc-500" title={`Tracking: ${type}`}>
+    <span className="inline-flex items-center gap-1 text-xs text-muted" title={`Tracking: ${type}`}>
       {icons[type]}
       <span className="capitalize">{type}</span>
     </span>
@@ -57,42 +57,67 @@ function TrackingIcon({ type }: { type: Exercise["tracking_type"] }) {
 }
 
 export function ExerciseCard({ exercise, onClick, onEdit, onDelete }: ExerciseCardProps) {
-  const muscleClass = muscleColors[exercise.primary_muscle_group] ?? "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
+  const config = muscleConfig[exercise.primary_muscle_group] ?? { bg: "bg-zinc-500", text: "text-zinc-600", icon: "text-zinc-500" };
 
   const content = (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="font-medium text-zinc-900 dark:text-zinc-100">{exercise.name}</h3>
-        {exercise.is_custom && (
-          <span className="shrink-0 rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-            Custom
-          </span>
-        )}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3 min-w-0">
+          <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${config.bg} text-white shadow-sm`}>
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="font-semibold text-sm text-foreground truncate">{exercise.name}</h3>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${config.text} bg-current/10`}>
+                {exercise.primary_muscle_group}
+              </span>
+              {exercise.is_custom && (
+                <span className="inline-flex items-center rounded-full bg-purple-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-purple-600">
+                  Custom
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <svg className="h-4 w-4 text-muted/50 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
       </div>
-      <div className="mt-2 flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${muscleClass}`}>
-          {exercise.primary_muscle_group}
-        </span>
+      
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
         {exercise.equipment && (
-          <span className="text-xs text-zinc-500">{exercise.equipment}</span>
+          <span className="text-xs text-muted flex items-center gap-1">
+            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+            {exercise.equipment}
+          </span>
         )}
         <TrackingIcon type={exercise.tracking_type} />
       </div>
+      
       {exercise.secondary_muscle_groups.length > 0 && (
-        <div className="mt-1.5 text-xs text-zinc-400">
-          Also: {exercise.secondary_muscle_groups.join(", ")}
+        <div className="mt-2 text-[11px] text-muted/70">
+          Also targets: {exercise.secondary_muscle_groups.join(", ")}
         </div>
       )}
+      
       {exercise.is_custom && (onEdit || onDelete) && (
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex gap-2 pt-2 border-t border-border/50">
           {onEdit && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit();
               }}
-              className="rounded px-2 py-1 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold text-muted transition-all hover:bg-primary-light/50 hover:text-primary"
             >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+              </svg>
               Edit
             </button>
           )}
@@ -102,8 +127,11 @@ export function ExerciseCard({ exercise, onClick, onEdit, onDelete }: ExerciseCa
                 e.stopPropagation();
                 onDelete();
               }}
-              className="rounded px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900"
+              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold text-danger transition-all hover:bg-danger/10"
             >
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
               Delete
             </button>
           )}
@@ -112,11 +140,13 @@ export function ExerciseCard({ exercise, onClick, onEdit, onDelete }: ExerciseCa
     </>
   );
 
+  const cardClasses = "group w-full rounded-xl border border-border bg-surface p-4 text-left transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-0.5";
+
   if (onClick) {
     return (
       <button
         onClick={onClick}
-        className="w-full rounded-lg border border-zinc-200 bg-white p-4 text-left transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
+        className={cardClasses}
         aria-label={`Select ${exercise.name}`}
       >
         {content}
@@ -127,7 +157,7 @@ export function ExerciseCard({ exercise, onClick, onEdit, onDelete }: ExerciseCa
   return (
     <a
       href={`/exercises/${exercise.id}`}
-      className="block rounded-lg border border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
+      className={cardClasses + " block"}
     >
       {content}
     </a>
