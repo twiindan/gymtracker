@@ -170,7 +170,7 @@ export default function ExercisesPage() {
   return (
     <div className="mx-auto max-w-5xl py-4">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-8 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
           <p className="text-sm text-muted mt-1">{exercises.length} exercises available</p>
@@ -182,7 +182,7 @@ export default function ExercisesPage() {
             setShowForm(true);
           }}
           style={{ backgroundColor: '#10b981', color: 'white' }}
-          className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0"
+          className="flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0 shadow-lg shadow-primary/25"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

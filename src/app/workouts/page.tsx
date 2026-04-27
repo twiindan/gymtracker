@@ -187,14 +187,14 @@ export default function WorkoutsPage() {
   return (
     <div className="mx-auto max-w-3xl py-4 page-container">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between gap-4">
+        <div className="mb-10 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Workouts</h1>
           <p className="text-sm text-muted mt-1">{workouts.length} total workouts logged</p>
         </div>
         <Link
           href="/workouts/active"
-          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] shrink-0"
+          className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] shrink-0 shadow-lg shadow-primary/25"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
