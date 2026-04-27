@@ -9,27 +9,27 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Exercise Database
 
-- [ ] **DB-01**: Built-in exercise database with search — ~200-400 common exercises, searchable by name and muscle group
-- [ ] **DB-02**: Custom exercises — user can add their own exercises with name, muscle group, and equipment type
+- [x] **DB-01**: Built-in exercise database with search — ~200-400 common exercises, searchable by name and muscle group
+- [x] **DB-02**: Custom exercises — user can add their own exercises with name, muscle group, and equipment type
 
 ### Workout Logging
 
-- [ ] **LOG-01**: User can log exercises with sets, reps, and weight during a workout
-- [ ] **LOG-02**: User can start a free-form workout without selecting a routine first
-- [ ] **LOG-03**: User can edit past workouts to fix mistakes (weight, reps, missed sets)
-- [ ] **LOG-04**: User can duplicate the last set with one tap to speed up logging
+- [x] **LOG-01**: User can log exercises with sets, reps, and weight during a workout
+- [x] **LOG-02**: User can start a free-form workout without selecting a routine first
+- [x] **LOG-03**: User can edit past workouts to fix mistakes (weight, reps, missed sets)
+- [x] **LOG-04**: User can duplicate the last set with one tap to speed up logging
 
 ### History & Progress
 
-- [ ] **HIST-01**: User can view a scrollable list of past workouts with summary details
-- [ ] **HIST-02**: User can track personal records (PRs) per exercise — max weight, max reps, estimated 1RM
-- [ ] **HIST-03**: User can view progress charts showing strength and volume over time per exercise
+- [x] **HIST-01**: User can view a scrollable list of past workouts with summary details
+- [x] **HIST-02**: User can track personal records (PRs) per exercise — max weight, max reps, estimated 1RM
+- [x] **HIST-03**: User can view progress charts showing strength and volume over time per exercise
 
 ### Routines & Structure
 
-- [ ] **RTN-01**: User can create and save workout routine templates (exercises, order, target sets/reps)
-- [ ] **RTN-02**: User can start a workout from a saved routine template
-- [ ] **RTN-03**: User can copy a previous workout and adjust it for the current session
+- [x] **RTN-01**: User can create and save workout routine templates (exercises, order, target sets/reps)
+- [x] **RTN-02**: User can start a workout from a saved routine template
+- [x] **RTN-03**: User can copy a previous workout and adjust it for the current session
 
 ## v2 Requirements
 
@@ -88,18 +88,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DB-01 | Phase 1 | Pending |
-| DB-02 | Phase 1 | Pending |
-| LOG-01 | Phase 2 | Pending |
-| LOG-02 | Phase 2 | Pending |
-| LOG-03 | Phase 3 | Pending |
-| LOG-04 | Phase 2 | Pending |
-| HIST-01 | Phase 3 | Pending |
-| HIST-02 | Phase 5 | Pending |
-| HIST-03 | Phase 5 | Pending |
-| RTN-01 | Phase 4 | Pending |
-| RTN-02 | Phase 4 | Pending |
-| RTN-03 | Phase 4 | Pending |
+| DB-01 | Phase 1 | Complete |
+| DB-02 | Phase 1 | Complete |
+| LOG-01 | Phase 2 | Complete |
+| LOG-02 | Phase 2 | Complete |
+| LOG-03 | Phase 3 | Complete |
+| LOG-04 | Phase 2 | Complete |
+| HIST-01 | Phase 3 | Complete |
+| HIST-02 | Phase 5 | Complete |
+| HIST-03 | Phase 5 | Complete |
+| RTN-01 | Phase 4 | Complete |
+| RTN-02 | Phase 4 | Complete |
+| RTN-03 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total
