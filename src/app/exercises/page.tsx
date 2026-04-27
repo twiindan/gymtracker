@@ -201,8 +201,8 @@ export default function ExercisesPage() {
             onClick={() => handleMuscleFilter(null)}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
               activeMuscle === null
-                ? "bg-primary text-white shadow-sm shadow-primary/25"
-                : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
+                ? "bg-emerald-500 text-white shadow-sm"
+                : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400"
             }`}
           >
             All Muscles
@@ -215,8 +215,8 @@ export default function ExercisesPage() {
                 onClick={() => handleMuscleFilter(muscle)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
                   activeMuscle === muscle
-                    ? "bg-primary text-white shadow-sm shadow-primary/25"
-                    : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20"
+                    ? "bg-emerald-500 text-white shadow-sm"
+                    : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400"
                 }`}
               >
                 {muscle}
