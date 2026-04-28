@@ -16,6 +16,7 @@ export function Header() {
           <NavLink href="/workouts" icon={<DumbbellIcon />} label="Workouts" />
           <NavLink href="/routines" icon={<ClipboardIcon />} label="Routines" />
           <NavLink href="/exercises" icon={<SearchIcon />} label="Exercises" />
+          <NavLink href="/insights" icon={<BarChartIcon />} label="Insights" />
         </nav>
       </div>
     </header>
@@ -54,6 +55,17 @@ function SearchIcon() {
   return (
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  );
+}
+
+function BarChartIcon() {
+  return (
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18 17V9" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13 17V5" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8 17v-3" />
     </svg>
   );
 }
