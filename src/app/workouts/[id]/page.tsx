@@ -485,6 +485,7 @@ export default function WorkoutDetailPage() {
                         <th className="px-3 py-2 text-left text-xs font-medium text-zinc-500">Set</th>
                         <th className="px-3 py-2 text-right text-xs font-medium text-zinc-500">Weight</th>
                         <th className="px-3 py-2 text-right text-xs font-medium text-zinc-500">Reps</th>
+                        <th className="px-3 py-2 text-right text-xs font-medium text-zinc-500">RPE</th>
                         <th className="px-3 py-2 text-right text-xs font-medium text-zinc-500">Volume</th>
                         {isEditing && <th className="px-3 py-2 text-right text-xs font-medium text-zinc-500"></th>}
                       </tr>
@@ -528,6 +529,13 @@ export default function WorkoutDetailPage() {
                             ) : (
                               set.reps !== null ? set.reps : "—"
                             )}
+                          </td>
+                          <td className="px-3 py-2 text-right">
+                            {set.rpe !== null ? (
+                              <span className="inline-flex items-center rounded-full bg-blue-500/10 px-2 py-0.5 text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                {set.rpe}
+                              </span>
+                            ) : "—"}
                           </td>
                           <td className="px-3 py-2 text-right">
                             {calculateSetVolume(set) > 0

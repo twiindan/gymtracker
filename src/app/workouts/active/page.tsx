@@ -24,6 +24,7 @@ function createEmptySet(setNumber: number, prevSet?: ActiveSet): ActiveSet {
     set_number: setNumber,
     weight: prevSet?.weight ?? null,
     reps: prevSet?.reps ?? null,
+    rpe: prevSet?.rpe ?? null,
     completed: false,
   };
 }
@@ -170,7 +171,7 @@ function ActiveWorkoutInner() {
           for (const we of workoutExercises as { id: string; exercise_id: string; exercise_name: string; primary_muscle_group: string; sort_order: number }[]) {
             const { data: sets } = await supabase
               .from("sets")
-              .select("reps, weight")
+              .select("reps, weight, rpe")
               .eq("workout_exercise_id", we.id)
               .order("set_number");
 
@@ -181,13 +182,14 @@ function ActiveWorkoutInner() {
               primary_muscle_group: we.primary_muscle_group,
               tracking_type: "reps" as const,
               sort_order: we.sort_order,
-              sets: (sets as { reps: number | null; weight: number | null }[] | null ?? []).map((s, i) => ({
-                id: generateId(),
-                set_number: i + 1,
-                weight: s.weight,
-                reps: s.reps,
-                completed: false,
-              })),
+            sets: (sets as { reps: number | null; weight: number | null; rpe: number | null }[] | null ?? []).map((s, i) => ({
+              id: generateId(),
+              set_number: i + 1,
+              weight: s.weight,
+              reps: s.reps,
+              rpe: s.rpe,
+              completed: false,
+            })),
             });
           }
 
@@ -303,6 +305,7 @@ function ActiveWorkoutInner() {
             set_number: ex.sets.length + 1,
             weight: sourceSet.weight,
             reps: sourceSet.reps,
+            rpe: sourceSet.rpe,
             completed: false,
           };
           return {
@@ -429,6 +432,7 @@ function ActiveWorkoutInner() {
             set_number: set.set_number,
             reps: set.reps,
             weight: set.weight,
+            rpe: set.rpe,
             notes: null,
           }));
 
