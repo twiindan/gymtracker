@@ -125,9 +125,11 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 **Requirements**: CAL-01, CAL-02
 **Deferred from**: Phase 3 (calendar), Phase 5 (muscle tracking)
 
+Plans: 2 plans
+
 Plans:
-- [ ] `01-01-PLAN.md` — Calendar heatmap view (GitHub-style workout streak visualization)
-- [ ] `01-02-PLAN.md` — Muscle group volume tracking and heat map
+- [ ] `06-01-PLAN.md` — Calendar heatmap (GitHub-style 365-day workout consistency view)
+- [ ] `06-02-PLAN.md` — Muscle group volume tracking (horizontal bar chart with 7d/30d/90d toggle)
 
 ### Phase 2: Advanced Tracking
 **Goal**: Users can track exertion and receive progression suggestions
