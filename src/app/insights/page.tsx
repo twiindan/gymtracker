@@ -3,10 +3,17 @@
 import { useState, useEffect } from "react";
 import { CalendarHeatmap } from "@/components/calendar-heatmap";
 import { fetchWorkoutCalendarData } from "@/lib/calendar-utils";
+import { fetchMuscleVolume, type MuscleVolumeData } from "@/lib/muscle-volume-utils";
+import { MuscleVolumeChart } from "@/components/muscle-volume-chart";
+
+type TimeWindow = 7 | 30 | 90;
 
 export default function InsightsPage() {
   const [dateCounts, setDateCounts] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [muscleData, setMuscleData] = useState<MuscleVolumeData[]>([]);
+  const [muscleLoading, setMuscleLoading] = useState(true);
+  const [timeWindow, setTimeWindow] = useState<TimeWindow>(30);
 
   useEffect(() => {
     fetchWorkoutCalendarData(365)
@@ -14,6 +21,14 @@ export default function InsightsPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    setMuscleLoading(true);
+    fetchMuscleVolume(timeWindow)
+      .then(setMuscleData)
+      .catch(console.error)
+      .finally(() => setMuscleLoading(false));
+  }, [timeWindow]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 space-y-8">
@@ -53,21 +68,30 @@ export default function InsightsPage() {
         )}
       </div>
 
-      {/* Muscle Volume Placeholder */}
+      {/* Muscle Volume Section */}
       <div>
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold">Muscle Group Volume</h2>
-          <p className="text-xs text-muted">Coming soon</p>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-bold">Muscle Group Volume</h2>
+            <p className="text-sm text-muted">Total sets per muscle group</p>
+          </div>
+          <div className="flex gap-2">
+            {([7, 30, 90] as TimeWindow[]).map((days) => (
+              <button
+                key={days}
+                onClick={() => setTimeWindow(days)}
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                  timeWindow === days
+                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                    : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                }`}
+              >
+                {days}d
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="rounded-xl border-2 border-dashed border-border py-12 text-center">
-          <div className="mb-2 text-3xl">💪</div>
-          <p className="text-sm text-muted">
-            Muscle group volume chart coming soon
-          </p>
-          <p className="text-xs text-muted mt-1">
-            See which muscle groups you&apos;re training most over time.
-          </p>
-        </div>
+        <MuscleVolumeChart data={muscleData} loading={muscleLoading} />
       </div>
     </div>
   );
