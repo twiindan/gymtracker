@@ -129,7 +129,7 @@ Plans: 2 plans
 
 Plans:
 - [x] `06-01-PLAN.md` — Calendar heatmap (GitHub-style 365-day workout consistency view)
-- [ ] `06-02-PLAN.md` — Muscle group volume tracking (horizontal bar chart with 7d/30d/90d toggle)
+- [x] `06-02-PLAN.md` — Muscle group volume tracking (horizontal bar chart with 7d/30d/90d toggle)
 
 ### Phase 2: Advanced Tracking
 **Goal**: Users can track exertion and receive progression suggestions
@@ -163,7 +163,7 @@ Plans:
 
 | Phase | Plans | Status |
 |-------|-------|--------|
-| 1. Calendar & Visualization | 1/2 | In Progress |
+| 1. Calendar & Visualization | 2/2 | Complete |
 | 2. Advanced Tracking | 0/2 | Planned |
 | 3. Structure & Organization | 0/2 | Planned |
 | 4. Convenience & Polish | 0/1 | Planned |

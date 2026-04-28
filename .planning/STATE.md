@@ -1,16 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: "**Goal**: Expand GymTracker with advanced visualization, tracking features, and convenience tools."
-status: completed
-stopped_at: Completed 06-calendar-visualization-06-02-PLAN.md
-last_updated: "2026-04-28T07:54:12.420Z"
+milestone_name: Advanced Features & Visualization
+status: planning
+stopped_at: Completed v2.0 Phase 1: Calendar & Visualization
+last_updated: "2026-04-28T00:00:00.000Z"
+last_activity: 2026-04-28 — v2.0 Phase 1 complete (calendar heatmap + muscle volume chart)
 progress:
-  total_phases: 5
-  completed_phases: 0
+  total_phases: 4
+  completed_phases: 1
   total_plans: 7
-  completed_plans: 0
-  percent: 0
+  completed_plans: 2
+  percent: 29
 ---
 
 # Project State
@@ -26,8 +27,8 @@ See: .planning/PROJECT.md (updated 2025-04-23)
 
 **Milestone: v2.0 — Advanced Features & Visualization**
 
-Phase: 1 of 4 (Calendar & Visualization)
-Status: Plan 01 Complete — Plan 02 next
+Phase: 2 of 4 (Advanced Tracking)
+Status: Ready to plan
 
 See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 
@@ -57,8 +58,10 @@ See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 - Trend: Upward
 
 *Updated after each plan completion*
-| Phase 06-calendar-visualization P01 | 8 | 3 tasks | 4 files |
-| Phase 06-calendar-visualization P06-02 | 12 | 3 tasks | 3 files |
+
+| Phase | Plans | Duration | Tasks | Files |
+|-------|-------|----------|-------|-------|
+| 6. Calendar & Visualization | 2/2 | 20 min | 6 | 7 |
 
 ## Accumulated Context
 
@@ -135,15 +138,15 @@ Items acknowledged and carried forward from previous milestone close:
 | Scheduled workouts | v2 | Deferred | Phase 4 planning |
 | Routine folders | v2 | Deferred | Phase 4 planning |
 | Auto-progression | v2 | Deferred | Phase 4 planning |
-| Muscle group volume tracking | v2 (CAL-02) | Deferred | Phase 5 planning |
+| Muscle group volume tracking | v2 (CAL-02) | **Complete** | 2026-04-28 |
 | Muscle heat map | v2 | Deferred | Phase 5 planning |
 | RPE tracking | v2 (ADV-01) | Deferred | Phase 5 planning |
 | Data export | v2 (CONV-04) | Deferred | Phase 5 planning |
 
 ## Session Continuity
 
-Last session: 2026-04-28T07:54:11.955Z
-Stopped at: Completed 06-calendar-visualization-06-02-PLAN.md
+Last session: 2026-04-28
+Stopped at: v2.0 Phase 1 complete — Calendar & Visualization
 Resume file: None
 
-**Next plan:** 06-02-PLAN.md (Muscle group volume tracking)
+**Next phase:** v2.0 Phase 2 — Advanced Tracking (RPE + auto-progression)
