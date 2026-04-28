@@ -11,6 +11,16 @@ import type {
 import { createBrowserClient } from "@/db/client";
 import { ExercisePicker } from "@/components/exercise-picker";
 import { SetInput } from "@/components/set-input";
+import {
+  getProgressionSuggestion,
+  fetchExerciseHistory,
+  isUpperBodyMuscle,
+  detectPlateau,
+  groupSetsBySession,
+  getLastSetPerSession,
+  getMaxWeightReps,
+  type ProgressionSuggestion,
+} from "@/lib/progression-utils";
 
 const STORAGE_KEY = "gymtracker-active-workout";
 
@@ -67,6 +77,8 @@ function ActiveWorkoutInner() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [initializing, setInitializing] = useState(false);
+  const [suggestions, setSuggestions] = useState<ProgressionSuggestion[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Load from localStorage on mount, or initialize from routine/copy
@@ -107,6 +119,63 @@ function ActiveWorkoutInner() {
       };
     }
   }, [workout?.started_at]);
+
+  // Fetch progression suggestions when exercises are loaded
+  useEffect(() => {
+    if (workout && workout.exercises.length > 0) {
+      fetchSuggestions();
+    }
+  }, [workout?.id]);
+
+  async function fetchSuggestions() {
+    if (!workout) return;
+    setLoadingSuggestions(true);
+    try {
+      const newSuggestions: ProgressionSuggestion[] = [];
+
+      for (const exercise of workout.exercises) {
+        try {
+          const history = await fetchExerciseHistory(exercise.exercise_id, 20);
+          if (history.length === 0) continue;
+
+          const sessions = groupSetsBySession(history);
+          const lastPerSession = getLastSetPerSession(sessions);
+
+          // Check for plateau (last 2 sessions same weight/reps)
+          const hasPlateau = detectPlateau(lastPerSession, 2);
+
+          // Check for PR: compare most recent session against all-time max
+          const { maxWeight, maxReps } = getMaxWeightReps(sessions);
+          const lastSession = lastPerSession[0];
+          const hasPR =
+            (lastSession.weight !== null && lastSession.weight === maxWeight) ||
+            (lastSession.reps !== null && lastSession.reps === maxReps);
+
+          const suggestion = getProgressionSuggestion(
+            exercise.exercise_id,
+            exercise.exercise_name,
+            exercise.primary_muscle_group,
+            lastSession.weight,
+            lastSession.reps,
+            hasPlateau,
+            hasPR
+          );
+
+          if (suggestion) {
+            newSuggestions.push(suggestion);
+          }
+        } catch {
+          // Silently skip exercises that fail to fetch history
+        }
+      }
+
+      setSuggestions(newSuggestions);
+    } catch {
+      // Silently skip suggestions if fetch fails
+    } finally {
+      setLoadingSuggestions(false);
+    }
+  }
 
   async function initializeFromSource() {
     setInitializing(true);
@@ -514,6 +583,46 @@ function ActiveWorkoutInner() {
         )}
       </div>
 
+      {/* Progression Suggestions */}
+      {loadingSuggestions && (
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="text-sm text-zinc-500">Loading suggestions...</div>
+        </div>
+      )}
+      {suggestions.length > 0 && !loadingSuggestions && (
+        <div className="mt-4 space-y-3">
+          <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">Suggested Progression</h2>
+          {suggestions.map((suggestion) => (
+            <ProgressionSuggestionCard
+              key={suggestion.exerciseId}
+              suggestion={suggestion}
+              onAccept={(exerciseId, weight, reps) => {
+                setWorkout((prev) => {
+                  if (!prev) return prev;
+                  return {
+                    ...prev,
+                    exercises: prev.exercises.map((ex) => {
+                      if (ex.id !== exerciseId) return ex;
+                      const firstSet = ex.sets[0];
+                      if (!firstSet) return ex;
+                      return {
+                        ...ex,
+                        sets: ex.sets.map((s, i) =>
+                          i === 0 ? { ...s, weight: weight ?? s.weight, reps: reps ?? s.reps } : s
+                        ),
+                      };
+                    }),
+                  };
+                });
+              }}
+              onDismiss={(exerciseId) => {
+                setSuggestions((prev) => prev.filter((s) => s.exerciseId !== exerciseId));
+              }}
+            />
+          ))}
+        </div>
+      )}
+
       {/* Exercises */}
       <div className="mt-4 space-y-6">
         {workout.exercises.length === 0 && (
@@ -617,6 +726,81 @@ function ActiveWorkoutInner() {
           excludeIds={workout.exercises.map((ex) => ex.exercise_id)}
         />
       )}
+    </div>
+  );
+}
+
+function ProgressionSuggestionCard({
+  suggestion,
+  onAccept,
+  onDismiss,
+}: {
+  suggestion: ProgressionSuggestion;
+  onAccept: (exerciseId: string, weight: number | null, reps: number | null) => void;
+  onDismiss: (exerciseId: string) => void;
+}) {
+  const [weight, setWeight] = useState(suggestion.suggestedWeight);
+  const [reps, setReps] = useState(suggestion.suggestedReps);
+
+  return (
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950">
+      <div className="flex items-start justify-between">
+        <div>
+          <div className="font-semibold">{suggestion.exerciseName}</div>
+          <div className="text-xs text-zinc-500 mt-1">
+            {suggestion.reason === "pr" ? "Personal record!" : "Plateau detected"} — try increasing:
+          </div>
+          <div className="flex items-center gap-3 mt-2">
+            {suggestion.previousWeight !== null && (
+              <div className="flex items-center gap-1 text-sm">
+                <span className="text-zinc-400 line-through">{suggestion.previousWeight}kg</span>
+                <span className="text-zinc-400">→</span>
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  value={weight ?? ""}
+                  onChange={(e) => setWeight(e.target.value === "" ? null : parseFloat(e.target.value))}
+                  className="w-16 rounded border border-amber-300 bg-white px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
+                  step={0.5}
+                  min={0}
+                />
+                <span className="text-xs text-zinc-500">kg</span>
+              </div>
+            )}
+            {suggestion.previousReps !== null && (
+              <div className="flex items-center gap-1 text-sm">
+                <span className="text-zinc-400 line-through">{suggestion.previousReps} reps</span>
+                <span className="text-zinc-400">→</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  value={reps ?? ""}
+                  onChange={(e) => setReps(e.target.value === "" ? null : parseInt(e.target.value, 10))}
+                  className="w-14 rounded border border-amber-300 bg-white px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
+                  step={1}
+                  min={0}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-1">
+          <button
+            onClick={() => onAccept(suggestion.exerciseId, weight, reps)}
+            className="rounded-md bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700"
+          >
+            Apply
+          </button>
+          <button
+            onClick={() => onDismiss(suggestion.exerciseId)}
+            className="rounded-md p-1.5 text-zinc-400 hover:bg-amber-100 hover:text-zinc-600 dark:hover:bg-amber-900"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
