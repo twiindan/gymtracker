@@ -1,14 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: Advanced Features & Visualization
-status: planning
-stopped_at: Phase 07 context gathered — ready for planning
-last_updated: "2026-04-28T00:00:00.000Z"
-last_activity: 2026-04-28 — v2.0 Phase 2 context captured (RPE + auto-progression decisions)
+milestone_name: "**Goal**: Expand GymTracker with advanced visualization, tracking features, and convenience tools."
+status: executing
+stopped_at: v2.0 Phase 2 complete — Advanced Tracking (RPE + auto-progression)
+last_updated: "2026-04-28T11:00:00.000Z"
 progress:
-  total_phases: 4
-  completed_phases: 1
+  total_phases: 5
+  completed_phases: 0
   total_plans: 7
   completed_plans: 2
   percent: 29
@@ -62,6 +61,7 @@ See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 | Phase | Plans | Duration | Tasks | Files |
 |-------|-------|----------|-------|-------|
 | 6. Calendar & Visualization | 2/2 | 20 min | 6 | 7 |
+| 7. Advanced Tracking | 2/2 | 10 min | 5 | 5 |
 
 ## Accumulated Context
 
@@ -92,6 +92,10 @@ See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 - D-06-05: Tooltip formatter uses unknown type for Recharts v5+ compatibility
 - D-06-06: Loading skeleton uses randomized bar widths for visual variety
 - D-06-04: Used type assertions for Supabase select results to satisfy TypeScript
+- D-07-01: RPE input uses compact number input (w-14) inline with weight/reps
+- D-07-02: RPE only shown for reps/bodyweight tracking types
+- D-07-03: Progression suggestions use session grouping by date for plateau detection
+- D-07-04: Suggestion errors silently caught — non-blocking feature
 
 ### Completed Todos
 
@@ -123,6 +127,12 @@ See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 - [x] Build reusable progress chart component
 - [x] Enhance dashboard with PR highlights and stats
 - [x] Link exercise cards to progress pages
+- [x] Add RPE column to sets table with 1-10 CHECK constraint
+- [x] Add RPE input to SetInput component for strength exercises
+- [x] Propagate RPE through active workout save flow
+- [x] Display RPE as blue badge in workout history detail
+- [x] Create progression utility library with plateau detection
+- [x] Add progression suggestion panel to active workout page
 
 ### Blockers/Concerns
 
@@ -137,16 +147,18 @@ Items acknowledged and carried forward from previous milestone close:
 | Calendar heatmap | v2 (CAL-01) | **Complete** | 2026-04-28 |
 | Scheduled workouts | v2 | Deferred | Phase 4 planning |
 | Routine folders | v2 | Deferred | Phase 4 planning |
-| Auto-progression | v2 | Deferred | Phase 4 planning |
+| Auto-progression | v2 (POL-03) | **Complete** | Phase 7 execution |
 | Muscle group volume tracking | v2 (CAL-02) | **Complete** | 2026-04-28 |
 | Muscle heat map | v2 | Deferred | Phase 5 planning |
-| RPE tracking | v2 (ADV-01) | Deferred | Phase 5 planning |
+| RPE tracking | v2 (ADV-01) | **Complete** | Phase 7 execution |
 | Data export | v2 (CONV-04) | Deferred | Phase 5 planning |
 
 ## Session Continuity
 
 Last session: 2026-04-28
-Stopped at: v2.0 Phase 1 complete — Calendar & Visualization
+Stopped at: v2.0 Phase 2 complete — Advanced Tracking (RPE + auto-progression)
 Resume file: None
 
-**Next phase:** v2.0 Phase 2 — Advanced Tracking (RPE + auto-progression)
+**Next phase:** v2.0 Phase 3 — TBD
+
+**Completed Phase:** 07 (advanced-tracking) — 2/2 plans — 2026-04-28T11:00:00.000Z

@@ -42,7 +42,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Advanced Tracking
 
-- **ADV-01**: RPE (Rate of Perceived Exertion) tracking per set
+- [x] **ADV-01**: RPE (Rate of Perceived Exertion) tracking per set
 - **ADV-02**: Estimated 1RM calculation with formulas (Epley/Brzycki)
 - **ADV-03**: Exercise notes per set or workout for form tweaks and context
 - **ADV-04**: Workout streak / consistency counter
@@ -58,7 +58,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 - **POL-01**: Dark mode support
 - **POL-02**: Offline support / PWA installability
-- **POL-03**: Auto-progression suggestions based on previous session
+- [x] **POL-03**: Auto-progression suggestions based on previous session
 
 ## Out of Scope
 
@@ -101,6 +101,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RTN-02 | Phase 4 | Complete |
 | RTN-03 | Phase 4 | Complete |
 | CAL-01 | Phase 6 | Complete |
+| ADV-01 | Phase 7 | Complete |
+| POL-03 | Phase 7 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total

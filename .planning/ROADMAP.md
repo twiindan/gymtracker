@@ -140,8 +140,8 @@ Plans:
 Plans: 2 plans
 
 Plans:
-- [ ] `07-01-PLAN.md` — RPE schema migration + SetInput inline RPE + save flow + history display
-- [ ] `07-02-PLAN.md` — Progression utility library + suggestion panel on active workout page
+- [x] `07-01-PLAN.md` — RPE schema migration + SetInput inline RPE + save flow + history display
+- [x] `07-02-PLAN.md` — Progression utility library + suggestion panel on active workout page
 
 ### Phase 3: Structure & Organization
 **Goal**: Users can schedule workouts and organize routines hierarchically
@@ -166,6 +166,6 @@ Plans:
 | Phase | Plans | Status |
 |-------|-------|--------|
 | 1. Calendar & Visualization | 2/2 | Complete |
-| 2. Advanced Tracking | 0/2 | Planned |
+| 2. Advanced Tracking | 2/2 | Complete |
 | 3. Structure & Organization | 0/2 | Planned |
 | 4. Convenience & Polish | 0/1 | Planned |
