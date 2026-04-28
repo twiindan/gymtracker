@@ -119,6 +119,30 @@ export function SetInput({
         </div>
       )}
 
+      {/* RPE input (only for reps/bodyweight tracking) */}
+      {(trackingType === "reps" || trackingType === "bodyweight") && (
+        <div>
+          <label className="sr-only">RPE (1-10)</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            placeholder="rpe"
+            min={1}
+            max={10}
+            step={1}
+            value={set.rpe ?? ""}
+            onChange={(e) =>
+              onUpdate({
+                ...set,
+                rpe: e.target.value === "" ? null : parseInt(e.target.value, 10),
+              })
+            }
+            className="w-14 rounded-md border border-zinc-200 px-2 py-2 text-center text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            aria-label="RPE (1-10)"
+          />
+        </div>
+      )}
+
       {/* Duplicate button (only on last set) */}
       {isLast && (
         <button
