@@ -62,6 +62,7 @@ export interface Set {
   set_number: number;
   reps: number | null;
   weight: number | null;
+  rpe: number | null;
   notes: string | null;
   created_at: string;
 }
@@ -73,6 +74,7 @@ export interface ActiveSet {
   reps: number | null;
   weight: number | null;
   completed: boolean;
+  rpe?: number | null;
 }
 
 export interface ActiveWorkoutExercise {
