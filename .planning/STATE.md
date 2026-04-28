@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Advanced Features & Visualization
 status: planning
-stopped_at: Completed v2.0 Phase 1: Calendar & Visualization
+stopped_at: Phase 07 context gathered — ready for planning
 last_updated: "2026-04-28T00:00:00.000Z"
-last_activity: 2026-04-28 — v2.0 Phase 1 complete (calendar heatmap + muscle volume chart)
+last_activity: 2026-04-28 — v2.0 Phase 2 context captured (RPE + auto-progression decisions)
 progress:
   total_phases: 4
   completed_phases: 1
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2025-04-23)
 **Milestone: v2.0 — Advanced Features & Visualization**
 
 Phase: 2 of 4 (Advanced Tracking)
-Status: Ready to plan
+Status: Context gathered — ready for planning
 
 See: `.planning/MILESTONE-v1.0.md` for previous milestone summary.
 
