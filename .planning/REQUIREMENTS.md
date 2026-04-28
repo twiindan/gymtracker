@@ -37,7 +37,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Calendar & Visualization
 
-- **CAL-01**: Calendar heatmap view of workout days (GitHub-style)
+- [x] **CAL-01**: Calendar heatmap view of workout days (GitHub-style)
 - **CAL-02**: Muscle group volume tracking — see which muscles are getting attention over time
 
 ### Advanced Tracking
@@ -100,6 +100,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RTN-01 | Phase 4 | Complete |
 | RTN-02 | Phase 4 | Complete |
 | RTN-03 | Phase 4 | Complete |
+| CAL-01 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total

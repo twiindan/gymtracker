@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 Plans: 2 plans
 
 Plans:
-- [ ] `06-01-PLAN.md` — Calendar heatmap (GitHub-style 365-day workout consistency view)
+- [x] `06-01-PLAN.md` — Calendar heatmap (GitHub-style 365-day workout consistency view)
 - [ ] `06-02-PLAN.md` — Muscle group volume tracking (horizontal bar chart with 7d/30d/90d toggle)
 
 ### Phase 2: Advanced Tracking
@@ -163,7 +163,7 @@ Plans:
 
 | Phase | Plans | Status |
 |-------|-------|--------|
-| 1. Calendar & Visualization | 0/2 | Planned |
+| 1. Calendar & Visualization | 1/2 | In Progress |
 | 2. Advanced Tracking | 0/2 | Planned |
 | 3. Structure & Organization | 0/2 | Planned |
 | 4. Convenience & Polish | 0/1 | Planned |
