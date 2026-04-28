@@ -137,9 +137,11 @@ Plans:
 **Requirements**: ADV-01
 **Deferred from**: Phase 5 (RPE), Phase 4 (auto-progression)
 
+Plans: 2 plans
+
 Plans:
-- [ ] `02-01-PLAN.md` — RPE (Rate of Perceived Exertion) tracking per set
-- [ ] `02-02-PLAN.md` — Auto-progression suggestions based on previous session
+- [ ] `07-01-PLAN.md` — RPE schema migration + SetInput inline RPE + save flow + history display
+- [ ] `07-02-PLAN.md` — Progression utility library + suggestion panel on active workout page
 
 ### Phase 3: Structure & Organization
 **Goal**: Users can schedule workouts and organize routines hierarchically
