@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { generateCalendarGrid, getHeatmapColor } from "@/lib/calendar-utils";
 
 interface CalendarHeatmapProps {
   dateCounts: Map<string, number>;
+  scheduledDates?: Set<string>;
 }
 
 const CELL_SIZE = 12;
@@ -28,7 +29,7 @@ const MONTH_LABELS = [
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
 
-export function CalendarHeatmap({ dateCounts }: CalendarHeatmapProps) {
+export function CalendarHeatmap({ dateCounts, scheduledDates }: CalendarHeatmapProps) {
   const [hoveredCell, setHoveredCell] = useState<{
     date: string;
     count: number;
@@ -116,28 +117,40 @@ export function CalendarHeatmap({ dateCounts }: CalendarHeatmapProps) {
                   const y = day.dayOfWeek * (CELL_SIZE + CELL_GAP);
 
                   return (
-                    <rect
-                      key={day.date}
-                      x={x}
-                      y={y}
-                      width={CELL_SIZE}
-                      height={CELL_SIZE}
-                      rx={BORDER_RADIUS}
-                      ry={BORDER_RADIUS}
-                      fill={fill}
-                      style={{ cursor: "pointer" }}
-                      onMouseEnter={() =>
-                        setHoveredCell({ date: day.date, count })
-                      }
-                      onMouseLeave={() => setHoveredCell(null)}
-                    >
-                      <title>
-                        {formatTooltipDate(day.date)}:{" "}
-                        {count === 0
-                          ? "No workouts"
-                          : `${count} workout${count > 1 ? "s" : ""}`}
-                      </title>
-                    </rect>
+                    <React.Fragment key={day.date}>
+                      <rect
+                        x={x}
+                        y={y}
+                        width={CELL_SIZE}
+                        height={CELL_SIZE}
+                        rx={BORDER_RADIUS}
+                        ry={BORDER_RADIUS}
+                        fill={fill}
+                        style={{ cursor: "pointer" }}
+                        onMouseEnter={() =>
+                          setHoveredCell({ date: day.date, count })
+                        }
+                        onMouseLeave={() => setHoveredCell(null)}
+                      >
+                        <title>
+                          {formatTooltipDate(day.date)}:{" "}
+                          {count === 0
+                            ? scheduledDates?.has(day.date)
+                              ? "Scheduled workout (no log yet)"
+                              : "No workouts"
+                            : `${count} workout${count > 1 ? "s" : ""}`}
+                        </title>
+                      </rect>
+                      {scheduledDates?.has(day.date) && count === 0 && (
+                        <circle
+                          cx={x + CELL_SIZE / 2}
+                          cy={y + CELL_SIZE / 2}
+                          r={2}
+                          fill="var(--primary)"
+                          opacity={0.6}
+                        />
+                      )}
+                    </React.Fragment>
                   );
                 })
               )}

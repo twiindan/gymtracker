@@ -98,3 +98,31 @@ export async function fetchWorkoutCalendarData(
 
   return dateCounts;
 }
+
+/**
+ * Fetch scheduled workout dates for the last N days.
+ * Returns Set<string> where each entry is a "YYYY-MM-DD" date string.
+ */
+export async function fetchScheduledWorkoutCalendarData(
+  days: number = 365
+): Promise<Set<string>> {
+  const supabase = createBrowserClient();
+
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  const { data, error } = await supabase
+    .from("scheduled_workouts")
+    .select("scheduled_date")
+    .gte("scheduled_date", startDate.toISOString().slice(0, 10));
+
+  if (error) {
+    throw error;
+  }
+
+  const scheduledDates = new Set<string>();
+  (data as { scheduled_date: string }[] ?? []).forEach((s) => {
+    scheduledDates.add(s.scheduled_date);
+  });
+  return scheduledDates;
+}

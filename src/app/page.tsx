@@ -27,10 +27,18 @@ interface RecentPR {
   date: string;
 }
 
+interface UpcomingScheduled {
+  id: string;
+  name: string;
+  scheduled_date: string;
+  routine_name: string | null;
+}
+
 export default function Home() {
   const [recentWorkouts, setRecentWorkouts] = useState<RecentWorkout[]>([]);
   const [recentRoutines, setRecentRoutines] = useState<RecentRoutine[]>([]);
   const [recentPRs, setRecentPRs] = useState<RecentPR[]>([]);
+  const [upcomingScheduled, setUpcomingScheduled] = useState<UpcomingScheduled[]>([]);
   const [monthlyVolume, setMonthlyVolume] = useState(0);
   const [workoutStreak, setWorkoutStreak] = useState(0);
   const [totalWorkouts, setTotalWorkouts] = useState(0);
@@ -229,6 +237,41 @@ export default function Home() {
         setRecentPRs(prs.slice(0, 5));
       }
 
+      // Fetch upcoming scheduled workouts
+      const today = new Date().toISOString().slice(0, 10);
+      const { data: scheduled } = await supabase
+        .from("scheduled_workouts")
+        .select("*")
+        .gte("scheduled_date", today)
+        .order("scheduled_date", { ascending: true })
+        .limit(2);
+
+      if (scheduled && scheduled.length > 0) {
+        // Fetch routine names for scheduled workouts
+        const routineIds = (scheduled as { routine_id: string | null }[])
+          .map((s) => s.routine_id)
+          .filter(Boolean) as string[];
+
+        const routineMap = new Map<string, string>();
+        if (routineIds.length > 0) {
+          const { data: routines } = await supabase
+            .from("routines")
+            .select("id, name")
+            .in("id", routineIds);
+          (routines as { id: string; name: string }[] ?? []).forEach((r) => {
+            routineMap.set(r.id, r.name);
+          });
+        }
+
+        const upcoming: UpcomingScheduled[] = (scheduled as { id: string; name: string; scheduled_date: string; routine_id: string | null }[]).map((s) => ({
+          id: s.id,
+          name: s.name,
+          scheduled_date: s.scheduled_date,
+          routine_name: s.routine_id ? routineMap.get(s.routine_id) ?? null : null,
+        }));
+        setUpcomingScheduled(upcoming);
+      }
+
       setLoading(false);
     }
 
@@ -385,6 +428,45 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Up Next - Scheduled Workouts */}
+      {upcomingScheduled.length > 0 && (
+        <div className="mb-8 animate-slide-up stagger-4">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-light dark:bg-primary-light/30">
+              <CalendarIcon className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <h2 className="text-lg font-bold">Up next</h2>
+          </div>
+          <div className="space-y-2">
+            {upcomingScheduled.map((sw) => (
+              <Link
+                key={sw.id}
+                href={`/workouts/active?scheduled_workout_id=${sw.id}`}
+                className="group flex items-center justify-between rounded-xl border border-border bg-surface p-4 card-hover"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-light dark:bg-primary-light/30 transition-colors group-hover:bg-primary/20">
+                    <CalendarIcon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">{sw.name}</div>
+                    <div className="text-xs text-muted">
+                      {formatDate(sw.scheduled_date)}
+                      {sw.routine_name && ` · ${sw.routine_name}`}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Recent Workouts */}
       <div className="animate-slide-up stagger-5">
@@ -555,6 +637,14 @@ function PlayIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z" />
+    </svg>
+  );
+}
+
+function CalendarIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
     </svg>
   );
 }

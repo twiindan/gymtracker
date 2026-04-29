@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CalendarHeatmap } from "@/components/calendar-heatmap";
-import { fetchWorkoutCalendarData } from "@/lib/calendar-utils";
+import { fetchWorkoutCalendarData, fetchScheduledWorkoutCalendarData } from "@/lib/calendar-utils";
 import { fetchMuscleVolume, type MuscleVolumeData } from "@/lib/muscle-volume-utils";
 import { MuscleVolumeChart } from "@/components/muscle-volume-chart";
 
@@ -10,14 +10,21 @@ type TimeWindow = 7 | 30 | 90;
 
 export default function InsightsPage() {
   const [dateCounts, setDateCounts] = useState<Map<string, number>>(new Map());
+  const [scheduledDates, setScheduledDates] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [muscleData, setMuscleData] = useState<MuscleVolumeData[]>([]);
   const [muscleLoading, setMuscleLoading] = useState(true);
   const [timeWindow, setTimeWindow] = useState<TimeWindow>(30);
 
   useEffect(() => {
-    fetchWorkoutCalendarData(365)
-      .then(setDateCounts)
+    Promise.all([
+      fetchWorkoutCalendarData(365),
+      fetchScheduledWorkoutCalendarData(365),
+    ])
+      .then(([counts, scheduled]) => {
+        setDateCounts(counts);
+        setScheduledDates(scheduled);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -64,7 +71,7 @@ export default function InsightsPage() {
         {loading ? (
           <CalendarSkeleton />
         ) : (
-          <CalendarHeatmap dateCounts={dateCounts} />
+          <CalendarHeatmap dateCounts={dateCounts} scheduledDates={scheduledDates} />
         )}
       </div>
 
