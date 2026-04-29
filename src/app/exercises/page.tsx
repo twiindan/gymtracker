@@ -231,8 +231,8 @@ export default function ExercisesPage() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-surface p-6 shadow-2xl border border-border animate-slide-up">
-            <div className="flex items-center justify-between mb-5">
+          <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-surface shadow-2xl border border-border animate-slide-up">
+            <div className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
               <h2 className="text-xl font-bold">
                 {editingExercise ? "Edit Exercise" : "Add Custom Exercise"}
               </h2>
