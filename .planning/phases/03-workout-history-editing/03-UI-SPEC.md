@@ -52,23 +52,29 @@ Tailwind v4 default spacing scale (all multiples of 4px). Confirmed from codebas
 
 ## Typography
 
-| Role | Size | Weight | Line Height | Tailwind Class |
-|------|------|--------|-------------|----------------|
-| Body | 14px | 400 (normal) | 1.5 | `text-sm` |
-| Label/Caption | 12px | 500 (medium) | 1.25 | `text-xs font-medium` |
-| Subheading | 16px | 600 (semibold) | 1.25 | `text-base font-semibold` |
-| Heading | 20–24px | 600 (semibold) | 1.2 | `text-xl` / `text-2xl font-semibold` |
-| Page Title | 28–30px | 800 (extrabold) | 1.1 | `text-3xl font-extrabold` |
-| Stat Value | 24px | 700 (bold) | 1.2 | `text-2xl font-bold` |
+**⚠️ Existing patterns documented below — codebase exceeds the ideal contract of 4 sizes / 2 weights. Consolidation recommended for future work.**
 
-**Constraints:**
-- Maximum 2 weights per semantic role (e.g., heading uses only semibold 600)
+| Role | Size | Weight | Line Height | Tailwind Class | Where Used |
+|------|------|--------|-------------|----------------|------------|
+| Micro label | 12px | 500 (medium) | 1.5 | `text-xs font-medium` | Table headers, metadata labels, badge text |
+| Body | 14px | 500 (medium) | 1.5 | `text-sm font-medium` | Button text, form labels, body text, links |
+| Input | 16px | 400 (normal) | 1.5 | `text-base` | Form input fields |
+| Subheading | 18px | 600 (semibold) | 1.25 | `text-lg font-semibold` | Modal headings, section titles |
+| Heading | 20px | 600 (semibold) | 1.2 | `text-xl font-semibold` | Page sub-headings |
+| Page heading | 24px | 600 (semibold) | 1.2 | `text-2xl font-semibold` | Detail page title (`[id]/page.tsx:379`) |
+| Stat number | 24px | 700 (bold) | 1.2 | `text-2xl font-bold` | Stat card numbers (`[id]/page.tsx:426,430,434`) |
+| Page title | 30px | 800 (extrabold) | 1.1 | `text-3xl font-extrabold` | List page titles (`workouts/page.tsx:175,188`, `routines/page.tsx:57,73`) |
+
+**Constraints (actual codebase reality):**
+- 8 sizes in use: 12px (`text-xs`), 14px (`text-sm`), 16px (`text-base`), 18px (`text-lg`), 20px (`text-xl`), 24px (`text-2xl`), 30px (`text-3xl`), 36px (`text-4xl` on landing page)
+- 4 font weights in use: 500 (`font-medium`), 600 (`font-semibold`), 700 (`font-bold`), 800 (`font-extrabold`)
+- `text-3xl` maps to **30px** in Tailwind (not 28px)
 - Body line-height: 1.5 (set globally in `globals.css`)
 - Heading line-height: 1.2 (via `tracking-tight` on page titles)
-- `tracking-tight` applied to page titles and stat values
+- `tracking-tight` applied to page titles
 - `tracking-wider uppercase` applied to filter labels and section headers
 
-**Source:** Extracted from `workouts/page.tsx` (page title, stat cards, filter labels), `workouts/[id]/page.tsx` (heading, set table), `globals.css` (base line-height 1.5).
+**Source:** Extracted from full codebase grep. Phase 3 files (`workouts/[id]/page.tsx`) use `text-xs`, `text-sm`, `text-base`, `text-lg`, `text-2xl` with weights `font-medium`, `font-semibold`, `font-bold`. List pages use `text-3xl font-extrabold`.
 
 ---
 
@@ -114,7 +120,7 @@ Color tokens defined in `globals.css` via CSS custom properties with `@theme inl
 |---------|------|--------|
 | Primary CTA (history list) | "Start Workout" | `workouts/page.tsx` |
 | Secondary CTA (detail page) | "Copy" | `workouts/[id]/page.tsx` |
-| Edit mode toggle | "Edit" → "Save" / "Cancel" | `workouts/[id]/page.tsx` |
+| Edit mode toggle | "Edit" → "Save" / "Cancel" | `workouts/[id]/page.tsx:358,371` — **legacy bare labels** |
 | Add exercise button | "Add Exercise" | `workouts/[id]/page.tsx` |
 | Add set button | "Add Set" | `workouts/[id]/page.tsx` |
 | Empty state heading (filtered) | "No workouts found" | `workouts/page.tsx` |
@@ -124,8 +130,8 @@ Color tokens defined in `globals.css` via CSS custom properties with `@theme inl
 | Loading state | "Loading workout..." / "Loading your training history..." | Both pages |
 | Delete confirmation heading | "Delete Workout" | `workouts/[id]/page.tsx` |
 | Delete confirmation body | "Delete this workout? This cannot be undone." | `workouts/[id]/page.tsx` |
-| Delete confirmation primary button | "Delete" | `workouts/[id]/page.tsx` |
-| Delete confirmation secondary button | "Cancel" | `workouts/[id]/page.tsx` |
+| Delete confirmation primary button | "Delete" | `workouts/[id]/page.tsx:616` — **legacy bare label** |
+| Delete confirmation secondary button | "Cancel" | `workouts/[id]/page.tsx:622` — **legacy bare label** |
 | Remove exercise confirmation | "Remove this exercise and all its sets?" | `workouts/[id]/page.tsx` (native `confirm()`) |
 | Exercise picker heading | "Add Exercise" | `exercise-picker.tsx` |
 | Exercise picker — custom | "Create New Exercise" | `exercise-picker.tsx` |
@@ -141,9 +147,11 @@ Color tokens defined in `globals.css` via CSS custom properties with `@theme inl
 | Empty set row | "No sets logged" | `workouts/[id]/page.tsx` |
 
 **Destructive actions in this phase:**
-1. **Delete workout** — Confirmation modal with heading "Delete Workout", body "Delete this workout? This cannot be undone.", red primary button "Delete", neutral secondary button "Cancel"
+1. **Delete workout** — Confirmation modal with heading "Delete Workout", body "Delete this workout? This cannot be undone.", red primary button "Delete" (**legacy bare label**), neutral secondary button "Cancel" (**legacy bare label**)
 2. **Remove exercise** — Native `confirm()` dialog with "Remove this exercise and all its sets?"
 3. **Delete set** — No confirmation (direct action via icon button with trash icon)
+
+**⚠️ Legacy label note:** Edit-mode buttons use bare "Save" / "Cancel" and delete-confirm uses "Delete" / "Cancel". These are existing patterns from the current implementation. Future changes should use more specific labels (e.g. "Save Workout", "Discard Changes", "Delete Workout", "Keep Workout") to reduce ambiguity.
 
 ---
 
