@@ -148,9 +148,12 @@ Plans:
 **Depends on**: v1.0 Phase 4
 **Deferred from**: Phase 4 (scheduled workouts, routine folders)
 
+Plans: 3 plans
+
 Plans:
-- [ ] `03-01-PLAN.md` — Scheduled workouts (calendar-based workout planning)
-- [ ] `03-02-PLAN.md` — Routine folders and categorization
+- [ ] `08-01-PLAN.md` — Database schema: scheduled_workouts + routine_folders tables + type updates
+- [ ] `08-02-PLAN.md` — Scheduled workouts: /schedule page, quick add, active workout integration, heatmap, dashboard
+- [ ] `08-03-PLAN.md` — Routine folders: folder CRUD, assignment dropdown, grouped routines list
 
 ### Phase 4: Convenience & Polish
 **Goal**: Users can export their data and enjoy enhanced usability
