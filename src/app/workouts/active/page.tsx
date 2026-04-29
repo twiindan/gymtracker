@@ -70,6 +70,7 @@ function ActiveWorkoutInner() {
   const searchParams = useSearchParams();
   const routineId = searchParams.get("routine_id");
   const copyFromId = searchParams.get("copy_from");
+  const scheduledWorkoutId = searchParams.get("scheduled_workout_id");
 
   const [workout, setWorkout] = useState<ActiveWorkout | null>(null);
   const [showPicker, setShowPicker] = useState(false);
@@ -94,8 +95,8 @@ function ActiveWorkoutInner() {
       }
     }
 
-    // Initialize from routine or copy if params present
-    if (routineId || copyFromId) {
+    // Initialize from routine, copy, or scheduled workout if params present
+    if (routineId || copyFromId || scheduledWorkoutId) {
       initializeFromSource();
     }
   }, []);
@@ -272,6 +273,50 @@ function ActiveWorkoutInner() {
           };
           setWorkout(newWorkout);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(newWorkout));
+        } else {
+          startWorkout();
+        }
+      } else if (scheduledWorkoutId) {
+        // Fetch scheduled workout
+        const { data: scheduledData } = await supabase
+          .from("scheduled_workouts")
+          .select("*")
+          .eq("id", scheduledWorkoutId)
+          .single();
+
+        if (scheduledData && (scheduledData as { routine_id: string | null }).routine_id) {
+          // Pre-populate from linked routine
+          const routineIdFromScheduled = (scheduledData as { routine_id: string | null }).routine_id;
+          const { data: routineExercises } = await supabase
+            .from("routine_exercises")
+            .select("*")
+            .eq("routine_id", routineIdFromScheduled!)
+            .order("sort_order");
+
+          if (routineExercises && routineExercises.length > 0) {
+            const exercises: ActiveWorkoutExercise[] = (routineExercises as { exercise_id: string; exercise_name: string; primary_muscle_group: string; target_sets: number }[]).map((re, i) => ({
+              id: generateId(),
+              exercise_id: re.exercise_id,
+              exercise_name: re.exercise_name,
+              primary_muscle_group: re.primary_muscle_group,
+              tracking_type: "reps" as const,
+              sort_order: i,
+              sets: Array.from({ length: re.target_sets || 3 }, (_, j) => createEmptySet(j + 1)),
+            }));
+
+            const scheduledName = (scheduledData as { name: string }).name;
+            const newWorkout: ActiveWorkout = {
+              id: null,
+              name: `${scheduledName} - ${new Date().toLocaleDateString()}`,
+              started_at: new Date().toISOString(),
+              exercises,
+              notes: null,
+            };
+            setWorkout(newWorkout);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(newWorkout));
+          } else {
+            startWorkout();
+          }
         } else {
           startWorkout();
         }
@@ -462,6 +507,7 @@ function ActiveWorkoutInner() {
         .insert({
           name: workout.name || `Workout - ${new Date().toLocaleDateString()}`,
           routine_id: routineId || null,
+          scheduled_workout_id: scheduledWorkoutId || null,
           started_at: workout.started_at,
           ended_at: new Date().toISOString(),
           notes: workout.notes,
@@ -518,7 +564,7 @@ function ActiveWorkoutInner() {
       setError(err instanceof Error ? err.message : "Failed to save workout");
       setSaving(false);
     }
-  }, [workout, router]);
+  }, [workout, router, routineId, scheduledWorkoutId]);
 
   // Start workout screen
   if (!workout) {
