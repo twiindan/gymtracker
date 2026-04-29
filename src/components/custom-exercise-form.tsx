@@ -98,8 +98,8 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel }: CustomExer
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex max-h-[calc(90vh-5rem)] flex-col">
-      <div className="flex-1 space-y-5 overflow-y-auto px-6 pb-4">
+    <form onSubmit={handleSubmit} className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex-1 space-y-5 overflow-y-auto px-6 py-4">
       {error && (
         <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger border border-danger/20">
           {error}

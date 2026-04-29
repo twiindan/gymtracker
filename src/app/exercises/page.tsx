@@ -245,11 +245,13 @@ export default function ExercisesPage() {
                 </svg>
               </button>
             </div>
-            <CustomExerciseForm
-              exercise={editingExercise}
-              onSuccess={handleFormSuccess}
-              onCancel={handleFormCancel}
-            />
+            <div className="flex flex-1 flex-col overflow-hidden">
+              <CustomExerciseForm
+                exercise={editingExercise}
+                onSuccess={handleFormSuccess}
+                onCancel={handleFormCancel}
+              />
+            </div>
           </div>
         </div>
       )}
