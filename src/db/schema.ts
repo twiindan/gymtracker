@@ -18,6 +18,7 @@ export interface Workout {
   id: string;
   name: string | null;
   routine_id: string | null;
+  scheduled_workout_id: string | null;
   started_at: string;
   ended_at: string | null;
   notes: string | null;
@@ -29,8 +30,25 @@ export interface Routine {
   id: string;
   name: string;
   description: string | null;
+  folder_id: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ScheduledWorkout {
+  id: string;
+  name: string;
+  scheduled_date: string;
+  routine_id: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface RoutineFolder {
+  id: string;
+  name: string;
+  parent_id: string | null;
+  created_at: string;
 }
 
 export interface RoutineExercise {
