@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import type { Exercise } from "@/db/schema";
+import type { Exercise, RoutineFolder } from "@/db/schema";
 import { createBrowserClient } from "@/db/client";
 import { ExercisePicker } from "@/components/exercise-picker";
 
@@ -29,6 +29,17 @@ export default function NewRoutinePage() {
   const [showPicker, setShowPicker] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [folders, setFolders] = useState<RoutineFolder[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<string>("");
+
+  useEffect(() => {
+    async function fetchFolders() {
+      const supabase = createBrowserClient();
+      const { data } = await supabase.from("routine_folders").select("*").order("name");
+      setFolders(data as RoutineFolder[] ?? []);
+    }
+    fetchFolders();
+  }, []);
 
   function addExercise(exercise: Exercise) {
     const newExercise: RoutineExerciseForm = {
@@ -87,6 +98,7 @@ export default function NewRoutinePage() {
         .insert({
           name: name.trim(),
           description: description.trim() || null,
+          folder_id: selectedFolderId || null,
         } as never)
         .select("id")
         .single();
@@ -150,6 +162,22 @@ export default function NewRoutinePage() {
             className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
           />
         </div>
+
+        {folders.length > 0 && (
+          <div>
+            <label className="mb-1 block text-sm font-medium">Folder (optional)</label>
+            <select
+              value={selectedFolderId}
+              onChange={(e) => setSelectedFolderId(e.target.value)}
+              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+            >
+              <option value="">No folder</option>
+              {folders.map((folder) => (
+                <option key={folder.id} value={folder.id}>{folder.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* Exercises */}

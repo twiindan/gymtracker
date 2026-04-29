@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import type { Routine, RoutineExercise } from "@/db/schema";
+import type { Routine, RoutineExercise, RoutineFolder } from "@/db/schema";
 import { createBrowserClient } from "@/db/client";
 
 export default function RoutineDetailPage() {
@@ -13,6 +13,7 @@ export default function RoutineDetailPage() {
 
   const [routine, setRoutine] = useState<Routine | null>(null);
   const [exercises, setExercises] = useState<RoutineExercise[]>([]);
+  const [folder, setFolder] = useState<RoutineFolder | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,6 +47,18 @@ export default function RoutineDetailPage() {
 
       setRoutine(routineData as Routine);
       setExercises((exercisesData ?? []) as RoutineExercise[]);
+
+      // Fetch folder if assigned
+      const routineWithFolder = routineData as { folder_id: string | null };
+      if (routineWithFolder.folder_id) {
+        const { data: folderData } = await supabase
+          .from("routine_folders")
+          .select("*")
+          .eq("id", routineWithFolder.folder_id)
+          .single();
+        setFolder(folderData as RoutineFolder | null);
+      }
+
       setLoading(false);
     }
 
@@ -107,6 +120,14 @@ export default function RoutineDetailPage() {
             <h1 className="text-2xl font-semibold tracking-tight">{routine.name}</h1>
             {routine.description && (
               <p className="mt-1 text-sm text-zinc-500">{routine.description}</p>
+            )}
+            {folder && (
+              <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-accent-light/50 px-2.5 py-1 text-[11px] font-bold text-accent">
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                {folder.name}
+              </div>
             )}
           </div>
           <div className="flex gap-2">
