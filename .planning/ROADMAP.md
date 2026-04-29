@@ -151,9 +151,9 @@ Plans:
 Plans: 3 plans
 
 Plans:
-- [ ] `08-01-PLAN.md` — Database schema: scheduled_workouts + routine_folders tables + type updates
-- [ ] `08-02-PLAN.md` — Scheduled workouts: /schedule page, quick add, active workout integration, heatmap, dashboard
-- [ ] `08-03-PLAN.md` — Routine folders: folder CRUD, assignment dropdown, grouped routines list
+- [x] `08-01-PLAN.md` — Database schema: scheduled_workouts + routine_folders tables + type updates
+- [x] `08-02-PLAN.md` — Scheduled workouts: /schedule page, quick add, active workout integration, heatmap, dashboard
+- [x] `08-03-PLAN.md` — Routine folders: folder CRUD, assignment dropdown, grouped routines list
 
 ### Phase 4: Convenience & Polish
 **Goal**: Users can export their data and enjoy enhanced usability
@@ -170,5 +170,5 @@ Plans:
 |-------|-------|--------|
 | 1. Calendar & Visualization | 2/2 | Complete |
 | 2. Advanced Tracking | 2/2 | Complete |
-| 3. Structure & Organization | 0/2 | Planned |
+| 3. Structure & Organization | 3/3 | Complete |
 | 4. Convenience & Polish | 0/1 | Planned |
