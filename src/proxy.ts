@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export default function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -25,19 +25,22 @@ export default function proxy(request: NextRequest) {
     }
   );
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { pathname } = request.nextUrl;
   const publicPaths = ["/login", "/signup"];
 
-  if (publicPaths.includes(pathname)) {
-    return supabaseResponse;
+  if (!user && !publicPaths.includes(pathname)) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  return supabase.auth.getUser().then(({ data: { user } }) => {
-    if (!user) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-    return supabaseResponse;
-  });
+  if (user && publicPaths.includes(pathname)) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  return supabaseResponse;
 }
 
 export const config = {
