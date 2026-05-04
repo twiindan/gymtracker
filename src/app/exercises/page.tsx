@@ -261,7 +261,8 @@ export default function ExercisesPage() {
                 type="submit"
                 form="exercise-form"
                 disabled={!formValid || formSubmitting}
-                className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ backgroundColor: '#10b981', color: 'white' }}
+                className="flex-1 rounded-xl px-4 py-3 text-sm font-bold transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {formSubmitting ? (
                   <span className="flex items-center justify-center gap-2">
