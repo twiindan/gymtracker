@@ -18,6 +18,8 @@ export default function ExercisesPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingExercise, setEditingExercise] = useState<Exercise | undefined>();
   const [deleteConfirm, setDeleteConfirm] = useState<Exercise | null>(null);
+  const [formValid, setFormValid] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
 
   async function fetchExercises() {
     try {
@@ -245,12 +247,43 @@ export default function ExercisesPage() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-1 flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto px-6 py-4">
               <CustomExerciseForm
                 exercise={editingExercise}
                 onSuccess={handleFormSuccess}
                 onCancel={handleFormCancel}
+                onValidityChange={setFormValid}
+                onSubmittingChange={setFormSubmitting}
               />
+            </div>
+            <div className="shrink-0 flex gap-3 border-t border-border px-6 py-4">
+              <button
+                type="submit"
+                form="exercise-form"
+                disabled={!formValid || formSubmitting}
+                className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {formSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Saving...
+                  </span>
+                ) : editingExercise ? (
+                  "Update Exercise"
+                ) : (
+                  "Create Exercise"
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={handleFormCancel}
+                className="rounded-xl border border-border px-5 py-3 text-sm font-semibold text-muted transition-all hover:bg-surface-elevated hover:text-foreground"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
