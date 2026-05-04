@@ -148,7 +148,7 @@ export default function NewRoutinePage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g., Push Day"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+            className="w-full rounded-lg border border-border px-3 py-2 text-base outline-none focus:border-zinc-500"
           />
         </div>
 
@@ -159,7 +159,7 @@ export default function NewRoutinePage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Optional description..."
             rows={2}
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+            className="w-full rounded-lg border border-border px-3 py-2 text-base outline-none focus:border-zinc-500"
           />
         </div>
 
@@ -169,7 +169,7 @@ export default function NewRoutinePage() {
             <select
               value={selectedFolderId}
               onChange={(e) => setSelectedFolderId(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+              className="w-full rounded-lg border border-border px-3 py-2 text-base outline-none focus:border-zinc-500"
             >
               <option value="">No folder</option>
               {folders.map((folder) => (
@@ -185,7 +185,7 @@ export default function NewRoutinePage() {
         <h2 className="mb-3 text-lg font-semibold">Exercises</h2>
 
         {exercises.length === 0 && (
-          <div className="rounded-lg border border-dashed border-zinc-300 py-8 text-center text-zinc-500 dark:border-zinc-700">
+          <div               className="rounded-lg border border-dashed border-border py-8 text-center text-muted">
             No exercises yet. Tap below to add exercises.
           </div>
         )}
@@ -194,18 +194,18 @@ export default function NewRoutinePage() {
           {exercises.map((exercise, index) => (
             <div
               key={exercise.id}
-              className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+              className="rounded-xl border border-border bg-surface p-4"
             >
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="font-semibold">{exercise.exercise_name}</h3>
-                  <div className="text-xs text-zinc-500">{exercise.primary_muscle_group}</div>
+                  <div className="text-xs text-muted">{exercise.primary_muscle_group}</div>
                 </div>
                 <div className="flex gap-1">
                   {index > 0 && (
                     <button
                       onClick={() => moveExercise(exercise.id, "up")}
-                      className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                      className="rounded p-1 text-muted hover:bg-surface-elevated hover:text-muted"
                     >
                       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -215,7 +215,7 @@ export default function NewRoutinePage() {
                   {index < exercises.length - 1 && (
                     <button
                       onClick={() => moveExercise(exercise.id, "down")}
-                      className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                      className="rounded p-1 text-muted hover:bg-surface-elevated hover:text-muted"
                     >
                       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -224,7 +224,7 @@ export default function NewRoutinePage() {
                   )}
                   <button
                     onClick={() => removeExercise(exercise.id)}
-                    className="rounded p-1 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900"
+                    className="rounded p-1 text-muted hover:bg-red-50 hover:text-red-600"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -235,34 +235,34 @@ export default function NewRoutinePage() {
 
               <div className="mt-3 grid grid-cols-3 gap-2">
                 <div>
-                  <label className="mb-1 block text-xs text-zinc-500">Target Sets</label>
+                  <label className="mb-1 block text-xs text-muted">Target Sets</label>
                   <input
                     type="number"
                     value={exercise.target_sets}
                     onChange={(e) => updateExercise(exercise.id, "target_sets", parseInt(e.target.value) || 1)}
                     min={1}
                     max={20}
-                    className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-center text-sm dark:border-zinc-700 dark:bg-zinc-900"
+                    className="w-full rounded-md border border-border px-2 py-1.5 text-center text-sm"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs text-zinc-500">Min Reps</label>
+                  <label className="mb-1 block text-xs text-muted">Min Reps</label>
                   <input
                     type="number"
                     value={exercise.target_reps_min ?? ""}
                     onChange={(e) => updateExercise(exercise.id, "target_reps_min", e.target.value === "" ? null : parseInt(e.target.value))}
                     min={1}
-                    className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-center text-sm dark:border-zinc-700 dark:bg-zinc-900"
+                    className="w-full rounded-md border border-border px-2 py-1.5 text-center text-sm"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-xs text-zinc-500">Max Reps</label>
+                  <label className="mb-1 block text-xs text-muted">Max Reps</label>
                   <input
                     type="number"
                     value={exercise.target_reps_max ?? ""}
                     onChange={(e) => updateExercise(exercise.id, "target_reps_max", e.target.value === "" ? null : parseInt(e.target.value))}
                     min={1}
-                    className="w-full rounded-md border border-zinc-200 px-2 py-1.5 text-center text-sm dark:border-zinc-700 dark:bg-zinc-900"
+                    className="w-full rounded-md border border-border px-2 py-1.5 text-center text-sm"
                   />
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default function NewRoutinePage() {
 
         <button
           onClick={() => setShowPicker(true)}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 py-3 text-sm font-semibold text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-500 dark:hover:text-zinc-200"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-3 text-sm font-semibold text-muted transition-colors hover:border-zinc-400 hover:text-foreground"
         >
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -292,7 +292,7 @@ export default function NewRoutinePage() {
         </button>
         <button
           onClick={() => router.push("/routines")}
-          className="rounded-lg border border-zinc-300 px-6 py-3 text-base font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded-lg border border-border px-6 py-3 text-base font-medium text-foreground transition-colors hover:bg-surface-elevated"
         >
           Cancel
         </button>

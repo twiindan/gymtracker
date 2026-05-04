@@ -297,7 +297,7 @@ export default function RoutinesPage() {
                           if (e.key === "Enter") renameFolder(folder.id, editingFolderName);
                           if (e.key === "Escape") setEditingFolderId(null);
                         }}
-                        className="flex-1 rounded border border-zinc-300 px-2 py-1 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+                        className="flex-1 rounded border border-border px-2 py-1 text-sm"
                         autoFocus
                       />
                     ) : (
@@ -313,7 +313,7 @@ export default function RoutinesPage() {
                     )}
                     <button
                       onClick={() => deleteFolder(folder.id)}
-                      className="rounded p-1 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900"
+                      className="rounded p-1 text-muted hover:bg-red-50 hover:text-red-600"
                     >
                       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -332,7 +332,7 @@ export default function RoutinesPage() {
               value={newFolderName}
               onChange={(e) => setNewFolderName(e.target.value)}
               placeholder="New folder name"
-              className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900"
+              className="flex-1 rounded-lg border border-border px-3 py-2 text-sm outline-none focus:border-zinc-500"
             />
             <select
               value={newFolderParentId}

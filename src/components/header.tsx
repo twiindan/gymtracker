@@ -30,8 +30,9 @@ function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; l
     <Link
       href={href}
       className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-all hover:bg-primary-light hover:text-primary dark:hover:bg-primary-light/20"
+      aria-label={label}
     >
-      <span className="h-4 w-4">{icon}</span>
+      <span className="h-4 w-4" aria-hidden="true">{icon}</span>
       <span className="hidden sm:inline">{label}</span>
     </Link>
   );

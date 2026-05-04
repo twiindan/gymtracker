@@ -25,9 +25,9 @@ export function SetInput({
   const showDistance = trackingType === "distance";
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="flex items-center gap-2 rounded-lg border border-border bg-surface p-2">
       {/* Set number badge */}
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-sm font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface-elevated text-sm font-semibold text-foreground">
         {set.set_number}
       </div>
 
@@ -46,7 +46,7 @@ export function SetInput({
                 weight: e.target.value === "" ? null : parseFloat(e.target.value),
               })
             }
-            className="w-full rounded-md border border-zinc-200 px-3 py-2 text-center text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            className="w-full rounded-md border border-border px-3 py-2 text-center text-base outline-none focus:border-zinc-500"
             min={0}
             step={0.5}
           />
@@ -68,7 +68,7 @@ export function SetInput({
                 reps: e.target.value === "" ? null : parseInt(e.target.value, 10),
               })
             }
-            className="w-full rounded-md border border-zinc-200 px-3 py-2 text-center text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            className="w-full rounded-md border border-border px-3 py-2 text-center text-base outline-none focus:border-zinc-500"
             min={0}
             step={1}
           />
@@ -90,7 +90,7 @@ export function SetInput({
                 reps: e.target.value === "" ? null : parseInt(e.target.value, 10),
               })
             }
-            className="w-full rounded-md border border-zinc-200 px-3 py-2 text-center text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            className="w-full rounded-md border border-border px-3 py-2 text-center text-base outline-none focus:border-zinc-500"
             min={0}
             step={1}
           />
@@ -112,7 +112,7 @@ export function SetInput({
                 weight: e.target.value === "" ? null : parseFloat(e.target.value),
               })
             }
-            className="w-full rounded-md border border-zinc-200 px-3 py-2 text-center text-base outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            className="w-full rounded-md border border-border px-3 py-2 text-center text-base outline-none focus:border-zinc-500"
             min={0}
             step={0.1}
           />
@@ -137,7 +137,7 @@ export function SetInput({
                 rpe: e.target.value === "" ? null : parseInt(e.target.value, 10),
               })
             }
-            className="w-14 rounded-md border border-zinc-200 px-2 py-2 text-center text-sm outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-950"
+            className="w-14 rounded-md border border-border px-2 py-2 text-center text-sm outline-none focus:border-zinc-500"
             aria-label="RPE (1-10)"
           />
         </div>
@@ -147,7 +147,7 @@ export function SetInput({
       {isLast && (
         <button
           onClick={onDuplicate}
-          className="shrink-0 rounded-md bg-zinc-100 p-2 text-zinc-600 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+          className="shrink-0 rounded-md bg-surface-elevated p-2 text-muted transition-colors hover:bg-border"
           title="Duplicate set"
         >
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +159,7 @@ export function SetInput({
       {/* Delete button */}
       <button
         onClick={onDelete}
-        className="shrink-0 rounded-md p-2 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900"
+        className="shrink-0 rounded-md p-2 text-muted transition-colors hover:bg-red-50 hover:text-red-600"
         title="Delete set"
       >
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

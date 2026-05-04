@@ -6,6 +6,7 @@ import { ExerciseSearch } from "@/components/exercise-search";
 import { ExerciseList } from "@/components/exercise-list";
 import { CustomExerciseForm } from "@/components/custom-exercise-form";
 import { createBrowserClient } from "@/db/client";
+import { Button } from "@/components/ui/Button";
 
 export default function ExercisesPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -44,7 +45,6 @@ export default function ExercisesPage() {
     fetchExercises();
   }, []);
 
-  // Re-apply filters when exercises data changes (fixes stale closure)
   useEffect(() => {
     if (exercises.length > 0) {
       filterExercises(searchQuery, activeMuscle);
@@ -130,26 +130,24 @@ export default function ExercisesPage() {
 
   if (loading) {
     return (
-    <div className="py-4 page-container">
+      <div className="py-4 page-container">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
             <p className="text-sm text-muted mt-1">Loading...</p>
           </div>
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="md"
+            aria-label="Add exercise"
             onClick={() => {
               setEditingExercise(undefined);
               setShowForm(true);
             }}
-            style={{ backgroundColor: '#10b981', color: 'white' }}
-            className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0"
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
+            <PlusIcon />
             Add Exercise
-          </button>
+          </Button>
         </div>
         <div className="py-12 text-center">
           <div className="inline-flex h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
@@ -177,20 +175,18 @@ export default function ExercisesPage() {
           <h1 className="text-2xl font-extrabold tracking-tight">Exercise Catalog</h1>
           <p className="text-sm text-muted mt-1">{exercises.length} exercises available</p>
         </div>
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="lg"
+          aria-label="Add exercise"
           onClick={() => {
             setEditingExercise(undefined);
             setShowForm(true);
           }}
-          style={{ backgroundColor: '#10b981', color: 'white' }}
-          className="flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:opacity-90 active:scale-95 shrink-0 shadow-lg shadow-primary/25"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
+          <PlusIcon />
           Add Exercise
-        </button>
+        </Button>
       </div>
 
       <ExerciseSearch onSearch={handleSearch} resultCount={filtered.length} />
@@ -201,8 +197,12 @@ export default function ExercisesPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleMuscleFilter(null)}
-            className="rounded-full px-4 py-2 text-sm font-semibold transition-all shadow-sm"
-            style={activeMuscle === null ? { backgroundColor: '#10b981', color: 'white' } : { backgroundColor: '#d1fae5', color: '#059669' }}
+            aria-pressed={activeMuscle === null}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+              activeMuscle === null
+                ? "bg-primary text-white"
+                : "bg-primary-light text-primary dark:bg-primary-light/20"
+            }`}
           >
             All Muscles
           </button>
@@ -212,8 +212,12 @@ export default function ExercisesPage() {
               <button
                 key={muscle}
                 onClick={() => handleMuscleFilter(muscle)}
-                className="rounded-full px-4 py-2 text-sm font-semibold transition-all shadow-sm"
-                style={activeMuscle === muscle ? { backgroundColor: '#10b981', color: 'white' } : { backgroundColor: '#d1fae5', color: '#059669' }}
+                aria-pressed={activeMuscle === muscle}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  activeMuscle === muscle
+                    ? "bg-primary text-white"
+                    : "bg-primary-light text-primary dark:bg-primary-light/20"
+                }`}
               >
                 {muscle}
               </button>
@@ -240,6 +244,7 @@ export default function ExercisesPage() {
               </h2>
               <button
                 onClick={handleFormCancel}
+                aria-label="Close form"
                 className="rounded-lg p-2 text-muted hover:bg-surface-elevated transition-colors"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -257,34 +262,26 @@ export default function ExercisesPage() {
               />
             </div>
             <div className="shrink-0 flex gap-3 border-t border-border bg-surface px-6 py-4 sm:pb-4 pb-6">
-              <button
+              <Button
                 type="submit"
+                variant="primary"
+                size="md"
+                className="flex-1"
                 form="exercise-form"
                 disabled={!formValid || formSubmitting}
-                style={{ backgroundColor: '#10b981', color: 'white' }}
-                className="flex-1 rounded-xl px-4 py-3 text-sm font-bold transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                loading={formSubmitting}
+                aria-label={editingExercise ? "Update exercise" : "Create exercise"}
               >
-                {formSubmitting ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Saving...
-                  </span>
-                ) : editingExercise ? (
-                  "Update Exercise"
-                ) : (
-                  "Create Exercise"
-                )}
-              </button>
-              <button
+                {editingExercise ? "Update Exercise" : "Create Exercise"}
+              </Button>
+              <Button
                 type="button"
+                variant="secondary"
+                size="md"
                 onClick={handleFormCancel}
-                className="rounded-xl border border-border px-5 py-3 text-sm font-semibold text-muted transition-all hover:bg-surface-elevated hover:text-foreground"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -304,22 +301,34 @@ export default function ExercisesPage() {
               Delete &quot;{deleteConfirm.name}&quot;? This action cannot be undone.
             </p>
             <div className="mt-5 flex gap-3">
-              <button
+              <Button
+                variant="danger"
+                size="md"
+                className="flex-1"
                 onClick={handleConfirmDelete}
-                className="flex-1 rounded-xl bg-danger px-4 py-2.5 text-sm font-bold text-white transition-all hover:bg-red-700 hover:shadow-lg hover:shadow-danger/25"
+                aria-label={`Delete ${deleteConfirm.name}`}
               >
                 Delete
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
+                size="md"
                 onClick={() => setDeleteConfirm(null)}
-                className="rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-muted transition-all hover:bg-surface-elevated"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
   );
 }

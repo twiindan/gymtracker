@@ -59,7 +59,7 @@ function formatElapsed(seconds: number): string {
 
 export default function ActiveWorkoutPage() {
   return (
-    <Suspense fallback={<div className="py-24 text-center text-zinc-500">Loading...</div>}>
+    <Suspense fallback={<div className="py-24 text-center text-muted">Loading...</div>}>
       <ActiveWorkoutInner />
     </Suspense>
   );
@@ -572,21 +572,21 @@ function ActiveWorkoutInner() {
       <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-24">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold tracking-tight">Start Workout</h1>
-          <p className="mt-2 text-zinc-500">Log your sets, track your progress.</p>
+          <p className="mt-2 text-muted">Log your sets, track your progress.</p>
         </div>
         {initializing ? (
-          <div className="text-zinc-500">Loading...</div>
+          <div className="text-muted">Loading...</div>
         ) : (
           <>
             <button
               onClick={startWorkout}
-              className="w-full max-w-xs rounded-xl bg-zinc-900 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="w-full max-w-xs rounded-xl bg-primary py-4 text-lg font-semibold text-white transition-colors hover:bg-primary-dark "
             >
               Start New Workout
             </button>
             <a
               href="/exercises"
-              className="mt-4 text-sm text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-300"
+              className="mt-4 text-sm text-muted transition-colors hover:text-foreground "
             >
               Browse exercises first
             </a>
@@ -600,23 +600,23 @@ function ActiveWorkoutInner() {
   return (
     <div className="mx-auto max-w-2xl py-4">
       {/* Header */}
-      <div className="sticky top-14 z-10 -mx-4 border-b border-zinc-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+      <div className="sticky top-14 z-10 -mx-4 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur  ">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold">Active Workout</h1>
-            <div className="text-sm text-zinc-500">{formatElapsed(elapsed)}</div>
+            <div className="text-sm text-muted">{formatElapsed(elapsed)}</div>
           </div>
           <div className="flex gap-2">
             <button
               onClick={cancelWorkout}
-              className="rounded-lg border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated   dark:hover:bg-primary-dark"
             >
               Cancel
             </button>
             <button
               onClick={finishWorkout}
               disabled={saving}
-              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-dark disabled:opacity-50 "
             >
               {saving ? "Saving..." : "Finish"}
             </button>
@@ -631,13 +631,13 @@ function ActiveWorkoutInner() {
 
       {/* Progression Suggestions */}
       {loadingSuggestions && (
-        <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="text-sm text-zinc-500">Loading suggestions...</div>
+        <div className="mt-4 rounded-xl border border-border bg-surface p-4  ">
+          <div className="text-sm text-muted">Loading suggestions...</div>
         </div>
       )}
       {suggestions.length > 0 && !loadingSuggestions && (
         <div className="mt-4 space-y-3">
-          <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">Suggested Progression</h2>
+          <h2 className="text-sm font-semibold text-muted uppercase tracking-wider">Suggested Progression</h2>
           {suggestions.map((suggestion) => (
             <ProgressionSuggestionCard
               key={suggestion.exerciseId}
@@ -672,7 +672,7 @@ function ActiveWorkoutInner() {
       {/* Exercises */}
       <div className="mt-4 space-y-6">
         {workout.exercises.length === 0 && (
-          <div className="py-12 text-center text-zinc-500">
+          <div className="py-12 text-center text-muted">
             No exercises yet. Tap "Add Exercise" to get started.
           </div>
         )}
@@ -680,12 +680,12 @@ function ActiveWorkoutInner() {
         {workout.exercises.map((exercise, exIndex) => (
           <div
             key={exercise.id}
-            className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+            className="rounded-xl border border-border bg-surface p-4  "
           >
             <div className="mb-3 flex items-start justify-between">
               <div>
                 <h3 className="font-semibold">{exercise.exercise_name}</h3>
-                <div className="text-xs text-zinc-500">
+                <div className="text-xs text-muted">
                   {exercise.primary_muscle_group}
                   {exercise.tracking_type !== "reps" && (
                     <span className="ml-1 capitalize">· {exercise.tracking_type}</span>
@@ -696,7 +696,7 @@ function ActiveWorkoutInner() {
                 {exIndex > 0 && (
                   <button
                     onClick={() => moveExercise(exercise.id, "up")}
-                    className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                    className="rounded p-1 text-muted hover:bg-surface-elevated hover:text-muted dark:hover:bg-primary-dark"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -706,7 +706,7 @@ function ActiveWorkoutInner() {
                 {exIndex < workout.exercises.length - 1 && (
                   <button
                     onClick={() => moveExercise(exercise.id, "down")}
-                    className="rounded p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                    className="rounded p-1 text-muted hover:bg-surface-elevated hover:text-muted dark:hover:bg-primary-dark"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -715,7 +715,7 @@ function ActiveWorkoutInner() {
                 )}
                 <button
                   onClick={() => removeExercise(exercise.id)}
-                  className="rounded p-1 text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900"
+                  className="rounded p-1 text-muted hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -742,7 +742,7 @@ function ActiveWorkoutInner() {
             {/* Add Set button */}
             <button
               onClick={() => addSet(exercise.id)}
-              className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-zinc-300 py-2 text-sm font-medium text-zinc-500 transition-colors hover:border-zinc-400 hover:text-zinc-700 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:text-zinc-300"
+              className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-border py-2 text-sm font-medium text-muted transition-colors hover:border-border hover:text-foreground    "
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -756,7 +756,7 @@ function ActiveWorkoutInner() {
       {/* Add Exercise button */}
       <button
         onClick={() => setShowPicker(true)}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-300 py-4 text-base font-semibold text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-500 dark:hover:text-zinc-200"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-4 text-base font-semibold text-muted transition-colors hover:border-border hover:text-foreground    "
       >
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -793,36 +793,36 @@ function ProgressionSuggestionCard({
       <div className="flex items-start justify-between">
         <div>
           <div className="font-semibold">{suggestion.exerciseName}</div>
-          <div className="text-xs text-zinc-500 mt-1">
+          <div className="text-xs text-muted mt-1">
             {suggestion.reason === "pr" ? "Personal record!" : "Plateau detected"} — try increasing:
           </div>
           <div className="flex items-center gap-3 mt-2">
             {suggestion.previousWeight !== null && (
               <div className="flex items-center gap-1 text-sm">
-                <span className="text-zinc-400 line-through">{suggestion.previousWeight}kg</span>
-                <span className="text-zinc-400">→</span>
+                <span className="text-muted line-through">{suggestion.previousWeight}kg</span>
+                <span className="text-muted">→</span>
                 <input
                   type="number"
                   inputMode="decimal"
                   value={weight ?? ""}
                   onChange={(e) => setWeight(e.target.value === "" ? null : parseFloat(e.target.value))}
-                  className="w-16 rounded border border-amber-300 bg-white px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
+                  className="w-16 rounded border border-amber-300 bg-surface px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
                   step={0.5}
                   min={0}
                 />
-                <span className="text-xs text-zinc-500">kg</span>
+                <span className="text-xs text-muted">kg</span>
               </div>
             )}
             {suggestion.previousReps !== null && (
               <div className="flex items-center gap-1 text-sm">
-                <span className="text-zinc-400 line-through">{suggestion.previousReps} reps</span>
-                <span className="text-zinc-400">→</span>
+                <span className="text-muted line-through">{suggestion.previousReps} reps</span>
+                <span className="text-muted">→</span>
                 <input
                   type="number"
                   inputMode="numeric"
                   value={reps ?? ""}
                   onChange={(e) => setReps(e.target.value === "" ? null : parseInt(e.target.value, 10))}
-                  className="w-14 rounded border border-amber-300 bg-white px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
+                  className="w-14 rounded border border-amber-300 bg-surface px-2 py-1 text-center text-sm font-semibold text-amber-700 outline-none focus:border-amber-500 dark:border-amber-800 dark:bg-amber-900 dark:text-amber-300"
                   step={1}
                   min={0}
                 />
@@ -839,7 +839,7 @@ function ProgressionSuggestionCard({
           </button>
           <button
             onClick={() => onDismiss(suggestion.exerciseId)}
-            className="rounded-md p-1.5 text-zinc-400 hover:bg-amber-100 hover:text-zinc-600 dark:hover:bg-amber-900"
+            className="rounded-md p-1.5 text-muted hover:bg-amber-100 hover:text-muted dark:hover:bg-amber-900"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

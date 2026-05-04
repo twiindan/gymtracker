@@ -174,7 +174,7 @@ export default function ExerciseProgressPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl py-12 text-center text-zinc-500">
+      <div className="mx-auto max-w-3xl py-12 text-center text-muted">
         Loading exercise data...
       </div>
     );
@@ -184,7 +184,7 @@ export default function ExerciseProgressPage() {
     return (
       <div className="mx-auto max-w-3xl py-12 text-center">
         <div className="text-red-600">Exercise not found</div>
-        <Link href="/exercises" className="mt-4 inline-block text-sm text-zinc-500 hover:text-zinc-900">
+        <Link href="/exercises" className="mt-4 inline-block text-sm text-muted hover:text-foreground">
           ← Back to exercises
         </Link>
       </div>
@@ -196,7 +196,7 @@ export default function ExerciseProgressPage() {
       {/* Back link */}
       <Link
         href="/exercises"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-300"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-foreground"
       >
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -207,8 +207,8 @@ export default function ExerciseProgressPage() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">{exercise.name}</h1>
-        <div className="mt-1 flex flex-wrap gap-2 text-sm text-zinc-500">
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium dark:bg-zinc-800">
+        <div className="mt-1 flex flex-wrap gap-2 text-sm text-muted">
+          <span className="rounded-full bg-surface-elevated px-2 py-0.5 text-xs font-medium">
             {exercise.primary_muscle_group}
           </span>
           {exercise.equipment && <span>{exercise.equipment}</span>}
@@ -238,7 +238,7 @@ export default function ExerciseProgressPage() {
       <div>
         <h2 className="mb-3 text-lg font-semibold">Workout History</h2>
         {history.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-zinc-300 py-8 text-center text-zinc-500 dark:border-zinc-700">
+          <div className="rounded-xl border border-dashed border-border py-8 text-center text-muted">
             No workouts logged yet. Start tracking to see your progress!
           </div>
         ) : (
@@ -247,18 +247,18 @@ export default function ExerciseProgressPage() {
               <Link
                 key={entry.workout_id}
                 href={`/workouts/${entry.workout_id}`}
-                className="block rounded-xl border border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                className="block rounded-xl border border-border bg-surface p-4 transition-colors hover:border-zinc-300"
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium">{entry.workout_name || "Workout"}</div>
-                    <div className="text-xs text-zinc-500">{formatDate(entry.date)}</div>
+                    <div className="text-xs text-muted">{formatDate(entry.date)}</div>
                   </div>
                   <div className="text-right text-sm">
                     {entry.best_weight !== null && (
                       <div className="font-medium">{entry.best_weight} kg × {entry.best_reps}</div>
                     )}
-                    <div className="text-xs text-zinc-500">
+                    <div className="text-xs text-muted">
                       {entry.sets_count} sets · {Math.round(entry.total_volume)} kg volume
                     </div>
                   </div>

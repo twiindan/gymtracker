@@ -80,7 +80,7 @@ export default function RoutineDetailPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl py-12 text-center text-zinc-500">
+      <div className="mx-auto max-w-2xl py-12 text-center text-muted">
         Loading routine...
       </div>
     );
@@ -92,7 +92,7 @@ export default function RoutineDetailPage() {
         <div className="text-red-600">{error || "Routine not found"}</div>
         <Link
           href="/routines"
-          className="mt-4 inline-block text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300"
+          className="mt-4 inline-block text-sm text-muted hover:text-foreground"
         >
           ← Back to routines
         </Link>
@@ -105,7 +105,7 @@ export default function RoutineDetailPage() {
       {/* Back link */}
       <Link
         href="/routines"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-300"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-foreground"
       >
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -119,7 +119,7 @@ export default function RoutineDetailPage() {
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">{routine.name}</h1>
             {routine.description && (
-              <p className="mt-1 text-sm text-zinc-500">{routine.description}</p>
+              <p className="mt-1 text-sm text-muted">{routine.description}</p>
             )}
             {folder && (
               <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-accent-light/50 px-2.5 py-1 text-[11px] font-bold text-accent">
@@ -149,15 +149,15 @@ export default function RoutineDetailPage() {
 
       {/* Stats */}
       <div className="mb-6 grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-xl border border-border bg-surface p-4 text-center">
           <div className="text-2xl font-bold">{exercises.length}</div>
-          <div className="text-xs text-zinc-500">Exercises</div>
+          <div className="text-xs text-muted">Exercises</div>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-xl border border-border bg-surface p-4 text-center">
           <div className="text-2xl font-bold">
             {exercises.reduce((sum, ex) => sum + (ex.target_sets || 0), 0)}
           </div>
-          <div className="text-xs text-zinc-500">Total Sets</div>
+          <div className="text-xs text-muted">Total Sets</div>
         </div>
       </div>
 
@@ -166,17 +166,17 @@ export default function RoutineDetailPage() {
         {exercises.map((exercise, index) => (
           <div
             key={exercise.id}
-            className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+            className="rounded-xl border border-border bg-surface p-4"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-sm font-semibold text-foreground">
                 {index + 1}
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold">{exercise.exercise_name}</h3>
-                <div className="text-xs text-zinc-500">{exercise.primary_muscle_group}</div>
+                <div className="text-xs text-muted">{exercise.primary_muscle_group}</div>
               </div>
-              <div className="text-right text-sm text-zinc-500">
+              <div className="text-right text-sm text-muted">
                 <div>{exercise.target_sets} sets</div>
                 {(exercise.target_reps_min || exercise.target_reps_max) && (
                   <div className="text-xs">
