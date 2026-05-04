@@ -183,16 +183,17 @@ export default function WorkoutsPage() {
   return (
     <div className="py-4 page-container">
       {/* Header */}
-        <div className="mb-10 flex items-center justify-between gap-4">
+        <div className="mb-12 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Workouts</h1>
           <p className="text-sm text-muted mt-1">{workouts.length} total workouts logged</p>
         </div>
         <Link
           href="/workouts/active"
-          className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] shrink-0 shadow-lg shadow-primary/25"
+          style={{ backgroundColor: "#10b981", color: "white" }}
+          className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shrink-0 shadow-lg shadow-primary/25"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+          <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
           Start Workout
@@ -305,7 +306,8 @@ export default function WorkoutsPage() {
           {workouts.length === 0 && (
             <Link
               href="/workouts/active"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25"
+              style={{ backgroundColor: "#10b981", color: "white" }}
+              className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:opacity-90 active:scale-[0.98] shadow-lg shadow-primary/25"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -315,18 +317,18 @@ export default function WorkoutsPage() {
           )}
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {filteredWorkouts.map((workout, index) => (
             <Link
               key={workout.id}
               href={`/workouts/${workout.id}`}
-              className="group block rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-0.5"
+              className="group block rounded-2xl border border-border bg-surface p-6 transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-0.5"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light/50 dark:bg-primary-light/20">
-                    <span className="text-sm font-bold text-primary">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-light/50 dark:bg-primary-light/20">
+                    <span className="text-lg font-bold text-primary">
                       {new Date(workout.started_at).getDate()}
                     </span>
                   </div>

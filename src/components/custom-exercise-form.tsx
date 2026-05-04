@@ -108,7 +108,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
   }
 
   return (
-    <form id="exercise-form" onSubmit={handleSubmit} className="space-y-5">
+    <form id="exercise-form" onSubmit={handleSubmit} className="space-y-6">
       {error && (
         <div className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger border border-danger/20">
           {error}
@@ -121,7 +121,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
       )}
 
       <div>
-        <label className="mb-1.5 block text-sm font-semibold text-foreground">
+        <label className="mb-2 block text-sm font-semibold text-foreground">
           Exercise Name <span className="text-danger">*</span>
         </label>
         <input
@@ -131,21 +131,21 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
           minLength={2}
           maxLength={50}
           required
-          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
+          className="w-full rounded-xl border border-border bg-surface px-4 py-3.5 text-base outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           placeholder="e.g., Cable Crossover"
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-foreground">
+          <label className="mb-2 block text-sm font-semibold text-foreground">
             Primary Muscle <span className="text-danger">*</span>
           </label>
           <select
             value={primaryMuscle}
             onChange={(e) => setPrimaryMuscle(e.target.value)}
             required
-            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-3.5 text-base outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           >
             <option value="">Select muscle group...</option>
             {MUSCLE_GROUPS.map((m) => (
@@ -157,13 +157,13 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-foreground">
+          <label className="mb-2 block text-sm font-semibold text-foreground">
             Equipment
           </label>
           <select
             value={equipment}
             onChange={(e) => setEquipment(e.target.value)}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-3.5 text-base outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-surface-elevated"
           >
             <option value="">None / Bodyweight</option>
             {EQUIPMENT_TYPES.map((eq) => (
@@ -176,14 +176,14 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold text-foreground">
+        <label className="mb-2.5 block text-sm font-semibold text-foreground">
           Secondary Muscle Groups
         </label>
         <div className="flex flex-wrap gap-2">
           {MUSCLE_GROUPS.map((m) => (
             <label
               key={m}
-              className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
+              className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 secondaryMuscles.includes(m)
                   ? "bg-primary text-white shadow-sm"
                   : "bg-primary-light/50 text-primary hover:bg-primary-light dark:bg-primary-light/20 dark:hover:bg-primary-light/30"
@@ -202,14 +202,14 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-semibold text-foreground">
+        <label className="mb-2.5 block text-sm font-semibold text-foreground">
           Tracking Type <span className="text-danger">*</span>
         </label>
         <div className="flex flex-wrap gap-3">
           {(["reps", "duration", "distance", "bodyweight"] as TrackingType[]).map((type) => (
             <label
               key={type}
-              className={`cursor-pointer rounded-xl border px-5 py-2.5 text-sm font-medium transition-all ${
+              className={`cursor-pointer rounded-xl border px-5 py-3 text-sm font-medium transition-all ${
                 trackingType === type
                   ? "border-primary bg-primary text-white shadow-sm"
                   : "border-border bg-surface text-muted hover:border-primary/50 hover:bg-primary-light/30 dark:bg-surface-elevated"
@@ -230,7 +230,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-semibold text-foreground">
+        <label className="mb-2 block text-sm font-semibold text-foreground">
           Description
         </label>
         <textarea
@@ -238,7 +238,7 @@ export function CustomExerciseForm({ exercise, onSuccess, onCancel, onValidityCh
           onChange={(e) => setDescription(e.target.value)}
           maxLength={500}
           rows={3}
-          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none dark:bg-surface-elevated"
+          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-base outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none dark:bg-surface-elevated"
           placeholder="Optional description or notes..."
         />
         <div className="mt-1 text-right text-xs text-muted">{description.length}/500</div>
