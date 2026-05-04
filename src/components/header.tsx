@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "@/components/auth-provider";
 
 export function Header() {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 border-b border-border glass">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
@@ -19,6 +24,19 @@ export function Header() {
           <NavLink href="/exercises" icon={<SearchIcon />} label="Exercises" />
           <NavLink href="/insights" icon={<BarChartIcon />} label="Insights" />
           <NavLink href="/settings" icon={<SettingsIcon />} label="Settings" />
+          {user && (
+            <button
+              onClick={signOut}
+              className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-all hover:text-danger ml-2"
+              aria-label="Sign out"
+              title={user.email}
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              </svg>
+              <span className="hidden sm:inline text-xs truncate max-w-[120px]">{user.email}</span>
+            </button>
+          )}
         </nav>
       </div>
     </header>
