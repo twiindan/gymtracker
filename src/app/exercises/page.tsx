@@ -232,8 +232,8 @@ export default function ExercisesPage() {
 
       {/* Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="flex h-[85vh] w-full max-w-lg flex-col rounded-2xl bg-surface shadow-2xl border border-border animate-slide-up">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="flex flex-col w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl bg-surface shadow-2xl border-t sm:border border-border animate-slide-up h-[100dvh] sm:h-auto sm:max-h-[85vh] overflow-hidden">
             <div className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
               <h2 className="text-xl font-bold">
                 {editingExercise ? "Edit Exercise" : "Add Custom Exercise"}
@@ -256,7 +256,7 @@ export default function ExercisesPage() {
                 onSubmittingChange={setFormSubmitting}
               />
             </div>
-            <div className="shrink-0 flex gap-3 border-t border-border px-6 py-4">
+            <div className="shrink-0 flex gap-3 border-t border-border bg-surface px-6 py-4 sm:pb-4 pb-6">
               <button
                 type="submit"
                 form="exercise-form"
